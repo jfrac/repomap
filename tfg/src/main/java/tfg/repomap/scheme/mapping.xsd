@@ -1,0 +1,32 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="mappings">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="class2class">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="sourceScheme">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="url"/>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="type"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="targetScheme">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="url"/>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="type"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element type="xs:string" name="sourceEntity"/>
+              <xs:element type="xs:string" name="targetEntity"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
