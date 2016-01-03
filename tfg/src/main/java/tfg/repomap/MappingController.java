@@ -1,17 +1,18 @@
 package tfg.repomap;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
+import tfg.repomap.dao.DAOFactory;
+import tfg.repomap.dao.MappingDAO;
+import tfg.repomap.dao.xml.XMLMappingDAOException;
+import tfg.repomap.mapping.Entity2Entity;
+import tfg.repomap.mapping.Entity2EntityExistsException;
+import tfg.repomap.mapping.MappingId;
 import tfg.repomap.scheme.Entity;
-import tfg.repomap.scheme.Mapping;
 import tfg.repomap.scheme.entity.EntityNotFoundException;
 import tfg.repomap.scheme.owl.OWLScheme;
 import tfg.repomap.scheme.xml.XMLScheme;
@@ -23,29 +24,51 @@ public class MappingController {
 			Entity srcEntity,
 			URL trgScheme,
 			Entity trgEntity
-	) throws EntityNotFoundException, OWLOntologyCreationException, URISyntaxException {
-		XMLScheme xmlScheme = new XMLScheme(srcScheme);
-		OWLScheme owlScheme = new OWLScheme(trgScheme);
-		
-		if (!xmlScheme.hasEntity(srcEntity)) {
-			throw new EntityNotFoundException();
-		}
-		
-		if (!owlScheme.hasEntity(trgEntity)) {
-			throw new EntityNotFoundException();
-		}
-		
+	) {
+		MappingDAO mappingDAO = DAOFactory.getDAO();
+		Mapping mapping;
 		try {
-			Mapping.createMapping(xmlScheme, srcEntity, owlScheme, trgEntity);
+			XMLScheme xmlScheme = new XMLScheme(srcScheme);
+			OWLScheme owlScheme = new OWLScheme(trgScheme);
 			
-		} catch (TransformerException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
+			MappingId mappingId = new MappingId(xmlScheme, owlScheme);
+			mapping = mappingDAO.findById(mappingId);
+			if (mapping == null) {
+				mapping = mappingDAO.create(new Mapping(xmlScheme, owlScheme));
+			}
+			
+			if (!xmlScheme.hasEntity(srcEntity)) {
+				throw new EntityNotFoundException();
+			}
+			
+			if (!owlScheme.hasEntity(trgEntity)) {
+				throw new EntityNotFoundException();
+			}
+			
+			Entity2Entity e2e = new Entity2Entity(srcEntity, trgEntity);
+			mapping.addEntity2Entity(e2e);
+			mappingDAO.update(mapping);
+		} catch (XMLMappingDAOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Entity2EntityExistsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (OWLOntologyCreationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (EntityNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		
 	}
 	
 	public static void main(String[] args) {
@@ -59,13 +82,7 @@ public class MappingController {
 			System.out.println("Mapping generated!");
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-		} catch (EntityNotFoundException e) {
-			e.printStackTrace();
-		} catch (OWLOntologyCreationException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}		
+		}
 	}
 
 }

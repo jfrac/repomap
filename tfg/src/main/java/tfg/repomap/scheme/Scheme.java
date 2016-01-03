@@ -2,9 +2,12 @@ package tfg.repomap.scheme;
 
 import java.net.URL;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class Scheme {
 	
 	@XmlElement

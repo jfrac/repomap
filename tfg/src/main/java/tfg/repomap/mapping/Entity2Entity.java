@@ -1,4 +1,4 @@
-package tfg.repomap.scheme.mapping;
+package tfg.repomap.mapping;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

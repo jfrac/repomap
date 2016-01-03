@@ -19,11 +19,14 @@ public class OWLScheme extends Scheme {
 	
 	public OWLScheme(URL schemeURL) throws OWLOntologyCreationException, URISyntaxException {
 		super(schemeURL);
-
 		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-		this.owlScheme =  manager.loadOntologyFromOntologyDocument(IRI.create(schemeURL));
+		this.owlScheme = manager.loadOntologyFromOntologyDocument(IRI.create(schemeURL));
 	}
 
+	public OWLScheme() {
+		
+	}
+	
 	@Override
 	public boolean hasEntity(Entity entity) {
 		for (OWLClass cls : this.owlScheme.getClassesInSignature()) {
@@ -33,5 +36,8 @@ public class OWLScheme extends Scheme {
 		}
         return false;
 	}
-
+	
+	public String getType() {
+		return "owl";
+	}
 }

@@ -37,4 +37,8 @@ public class XMLScheme extends Scheme {
 	protected void setXml(Document d) {
 		this.xml = d;
 	}
+	
+	public String getType() {
+		return "xml";
+	}
 }
