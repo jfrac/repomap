@@ -1,10 +1,7 @@
 package tfg.repomap;
 
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
-
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import tfg.repomap.dao.DAOFactory;
 import tfg.repomap.dao.MappingDAO;
@@ -15,6 +12,7 @@ import tfg.repomap.mapping.MappingId;
 import tfg.repomap.scheme.Entity;
 import tfg.repomap.scheme.entity.EntityNotFoundException;
 import tfg.repomap.scheme.owl.OWLScheme;
+import tfg.repomap.scheme.owl.OWLSchemeException;
 import tfg.repomap.scheme.xml.XMLScheme;
 
 public class MappingController {
@@ -51,19 +49,13 @@ public class MappingController {
 		} catch (XMLMappingDAOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Entity2EntityExistsException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (OWLOntologyCreationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
+		}  catch (Entity2EntityExistsException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (EntityNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (OWLSchemeException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

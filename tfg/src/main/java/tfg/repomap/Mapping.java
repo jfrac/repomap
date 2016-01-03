@@ -1,7 +1,6 @@
 package tfg.repomap;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class Mapping {
 	//@XmlElementWrapper
 	private List<Entity2Entity> entity2EntityMappings;
 
-	public Mapping(Scheme source, Scheme target) throws MalformedURLException {
+	public Mapping(Scheme source, Scheme target) {
 		this();
 		this.source = source;
 		this.target = target;

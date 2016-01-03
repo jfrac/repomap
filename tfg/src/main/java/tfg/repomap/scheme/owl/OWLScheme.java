@@ -17,10 +17,16 @@ public class OWLScheme extends Scheme {
 
 	private OWLOntology owlScheme;
 	
-	public OWLScheme(URL schemeURL) throws OWLOntologyCreationException, URISyntaxException {
+	public OWLScheme(URL schemeURL) throws OWLSchemeException {
 		super(schemeURL);
 		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-		this.owlScheme = manager.loadOntologyFromOntologyDocument(IRI.create(schemeURL));
+		try {
+			this.owlScheme = manager.loadOntologyFromOntologyDocument(IRI.create(schemeURL));
+		} catch (OWLOntologyCreationException e) {
+			throw new OWLSchemeException();
+		} catch (URISyntaxException e) {
+			throw new OWLSchemeException();
+		}
 	}
 
 	public OWLScheme() {
