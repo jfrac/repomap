@@ -19,28 +19,32 @@ public class OWLScheme extends Scheme {
 	
 	public OWLScheme(URL schemeURL) throws OWLSchemeException {
 		super(schemeURL);
-		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-		try {
-			this.owlScheme = manager.loadOntologyFromOntologyDocument(IRI.create(schemeURL));
-		} catch (OWLOntologyCreationException e) {
-			throw new OWLSchemeException();
-		} catch (URISyntaxException e) {
-			throw new OWLSchemeException();
-		}
 	}
 
 	public OWLScheme() {
-		
+		super();
 	}
 	
 	@Override
-	public boolean hasEntity(Entity entity) {
-		for (OWLClass cls : this.owlScheme.getClassesInSignature()) {
+	public boolean hasEntity(Entity entity) throws OWLSchemeException {
+		for (OWLClass cls : getScheme().getClassesInSignature()) {
 			if (cls.getIRI().getFragment().equals(entity.getName())) {
 				return true;
 			}
 		}
         return false;
+	}
+	
+	protected OWLOntology getScheme() throws OWLSchemeException {
+		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+		try {
+			owlScheme = manager.loadOntologyFromOntologyDocument(IRI.create(this.getURL()));
+			return owlScheme;
+		} catch (OWLOntologyCreationException e) {
+			throw new OWLSchemeException();
+		} catch (URISyntaxException e) {
+			throw new OWLSchemeException();
+		}
 	}
 	
 	public String getType() {

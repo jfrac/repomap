@@ -2,8 +2,8 @@ package tfg.repomap.dao;
 
 import java.util.Collection;
 
-import tfg.repomap.Mapping;
 import tfg.repomap.dao.xml.XMLMappingDAOException;
+import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingId;
 
 public interface MappingDAO {

@@ -1,5 +1,7 @@
 package tfg.repomap.scheme.owl;
 
-public class OWLSchemeException extends Exception {
+import tfg.repomap.scheme.SchemeException;
+
+public class OWLSchemeException extends SchemeException {
 
 }

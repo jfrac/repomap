@@ -17,6 +17,10 @@ public class Entity {
 		
 	}
 	
+	public Entity(Entity source) {
+		this.name = source.name;
+	}
+
 	public String getName() {
 		return this.name;
 	}

@@ -7,8 +7,10 @@ import tfg.repomap.scheme.Entity;
 
 @XmlRootElement
 public class Entity2Entity {
+	
 	@XmlElement
 	private Entity source;
+	
 	@XmlElement
 	private Entity target;
 	
@@ -20,5 +22,13 @@ public class Entity2Entity {
 	
 	public Entity2Entity() {
 		
+	}
+	
+	public Entity getSource() {
+		return new Entity(source);
+	}
+	
+	public Entity getTarget() {
+		return new Entity(target);
 	}
 }

@@ -10,8 +10,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import tfg.repomap.Mapping;
 import tfg.repomap.dao.MappingDAO;
+import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingId;
 import tfg.repomap.scheme.owl.OWLScheme;
 import tfg.repomap.scheme.xml.XMLScheme;
@@ -43,10 +43,7 @@ public class XMLMappingDAO implements MappingDAO {
 		
 		if (!mapping.exists()) {
 			return null;
-			//throw new XMLMappingDAOException();
-		} else {
-			System.out.println(mapping.getAbsolutePath());
-		}
+		} 
 		
 		try {
 			return this.loadFromFile(new File(filePath));

@@ -23,7 +23,7 @@ public abstract class Scheme {
 		this.url = schemeURL;
 	}
 		
-	public abstract boolean hasEntity(Entity entity);
+	public abstract boolean hasEntity(Entity entity) throws SchemeException;
 	
 	public URL getURL() {
 		return this.url;
