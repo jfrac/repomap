@@ -2,6 +2,9 @@ package tfg.repomap;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import org.w3c.dom.bootstrap.DOMImplementationRegistry;
+
 import tfg.repomap.dao.DAOFactory;
 import tfg.repomap.dao.MappingDAO;
 import tfg.repomap.dao.xml.XMLMappingDAOException;
@@ -58,19 +61,21 @@ public class MappingController {
 			e.printStackTrace();
 		} catch (EntityNotFoundException e) {
 			e.printStackTrace();
-		} catch (OWLSchemeException e) {
-			e.printStackTrace();
 		} catch (SchemeException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	protected void saveMapping(Mapping mapping) throws XMLMappingDAOException {
+	protected void saveMapping(Mapping mapping) 
+			throws XMLMappingDAOException {
 		MappingDAO mappingDAO = DAOFactory.getDAO();
 		mappingDAO.update(mapping);
 	}
 	
-	protected Mapping getMapping(URL srcScheme, URL trgScheme) throws XMLMappingDAOException, OWLSchemeException {
+	protected Mapping getMapping(
+			URL srcScheme, 
+			URL trgScheme
+	) throws XMLMappingDAOException, OWLSchemeException {
 		XMLScheme xmlScheme = new XMLScheme(srcScheme);
 		OWLScheme owlScheme = new OWLScheme(trgScheme);
 		
@@ -78,19 +83,20 @@ public class MappingController {
 		MappingId mappingId = new MappingId(xmlScheme, owlScheme);
 		Mapping mapping = mappingDAO.findById(mappingId);
 		if (mapping == null) {
-			mapping = mappingDAO.create(new Mapping(xmlScheme, owlScheme));
+			mapping = mappingDAO.create(xmlScheme, owlScheme);
 		}
 		return mapping;
 	}
 	
 	public static void main(String[] args) {
+		
 		try {
-			URL xmlSchema = new URL("http://miuras.inf.um.es/ontologies/eco_punned.owl");
+			URL xmlSchema = new URL("https://www.w3.org/2001/XMLSchema.xsd");
 			URL owlSchema = new URL("http://miuras.inf.um.es/ontologies/eco_punned.owl");
 			
 			MappingController controller = new MappingController();
 			
-			Entity xmlElement = new Entity("head");
+			Entity xmlElement = new Entity("complexContent");
 			Entity owlClass = new Entity("ECO_0000105");
 			controller.mapEntity2Entity(xmlSchema, xmlElement, owlSchema, owlClass);
 			

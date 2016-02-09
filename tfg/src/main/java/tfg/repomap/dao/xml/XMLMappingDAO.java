@@ -13,6 +13,7 @@ import javax.xml.bind.Unmarshaller;
 import tfg.repomap.dao.MappingDAO;
 import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingId;
+import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.owl.OWLScheme;
 import tfg.repomap.scheme.xml.XMLScheme;
 
@@ -20,21 +21,11 @@ public class XMLMappingDAO implements MappingDAO {
 
 	private static final String BASE_PATH = "."; 
 
-	public Mapping create(Mapping mapping) throws XMLMappingDAOException {
-		File file = new File(this.getFilePath(mapping.getId()));
-		JAXBContext jaxbContext;
-		try {
-			jaxbContext = JAXBContext.newInstance(Mapping.class, XMLScheme.class, OWLScheme.class);
-			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			jaxbMarshaller.marshal(mapping, new FileOutputStream(file));
-			//jaxbMarshaller.marshal(mapping, System.out);
-			return mapping;
-		} catch (JAXBException e) {
-			throw new XMLMappingDAOException();
-		} catch (FileNotFoundException e) {
-			throw new XMLMappingDAOException();
-		}
+	public Mapping create(Scheme sourceScheme, Scheme targetScheme) 
+			throws XMLMappingDAOException {
+		Mapping mapping = new Mapping(sourceScheme, targetScheme);
+		save(mapping);
+		return mapping;
 	}
 
 	public Mapping findById(MappingId mappingId) throws XMLMappingDAOException {
@@ -59,12 +50,28 @@ public class XMLMappingDAO implements MappingDAO {
 	}
 
 	public void update(Mapping mapping) throws XMLMappingDAOException {
-		this.create(mapping);
+		save(mapping);
 	}
 
 	public boolean remove(MappingId mappingId) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	protected void save(Mapping mapping) throws XMLMappingDAOException {
+		File file = new File(this.getFilePath(mapping.getId()));
+		JAXBContext jaxbContext;
+		try {
+			jaxbContext = JAXBContext.newInstance(Mapping.class, XMLScheme.class, OWLScheme.class);
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			jaxbMarshaller.marshal(mapping, new FileOutputStream(file));
+			//jaxbMarshaller.marshal(mapping, System.out);
+		} catch (JAXBException e) {
+			throw new XMLMappingDAOException();
+		} catch (FileNotFoundException e) {
+			throw new XMLMappingDAOException();
+		}
 	}
 	
 	protected String getFilePath(MappingId mappingId) {

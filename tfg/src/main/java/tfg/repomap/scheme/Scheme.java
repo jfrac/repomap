@@ -16,7 +16,7 @@ public abstract class Scheme {
 	private String type;
 	
 	public Scheme() {
-		
+		// because JAXB
 	}
 	
 	public Scheme(URL schemeURL) {

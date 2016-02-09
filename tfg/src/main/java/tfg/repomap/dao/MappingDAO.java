@@ -5,10 +5,11 @@ import java.util.Collection;
 import tfg.repomap.dao.xml.XMLMappingDAOException;
 import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingId;
+import tfg.repomap.scheme.Scheme;
 
 public interface MappingDAO {
 	
-	Mapping create(Mapping mapping) throws XMLMappingDAOException;
+	Mapping create(Scheme sourceScheme, Scheme targetScheme) throws XMLMappingDAOException;
 	
 	Mapping findById(MappingId mappingId) throws XMLMappingDAOException;
 	
