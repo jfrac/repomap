@@ -1,19 +1,11 @@
 package tfg.repomap.scheme.xml;
 
-import java.io.IOException;
 import java.net.URL;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
 import tfg.repomap.scheme.Entity;
 import tfg.repomap.scheme.Scheme;
 
-import org.apache.xerces.util.*;
 import org.apache.xerces.xs.*;
 import org.apache.xerces.impl.xs.XMLSchemaLoader;
 

@@ -54,13 +54,13 @@ public class Mapping {
 		pattern2PatternMappings = new LinkedList<Pattern2Pattern>();
 	}
 	
-	public boolean containsEntity2entity(Entity2Entity e2e) {
+	public boolean contains(Entity2Entity e2e) {
 		return entity2EntityMappings.contains(e2e);
 	}
 	
 	public void addEntity2Entity(Entity2Entity e2e) 
 			throws Entity2EntityExistsException, EntityNotFoundException, SchemeException {
-		if (this.containsEntity2entity(e2e)) {
+		if (this.contains(e2e)) {
 			throw new Entity2EntityExistsException();
 		}
 		
@@ -78,15 +78,6 @@ public class Mapping {
 	protected Document getXML() {
 		return this.xml;
 	}
-	
-	public void save(File f) throws TransformerException {
-		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		Transformer transformer = transformerFactory.newTransformer();
-		DOMSource dom = new DOMSource(this.getXML());
-		StreamResult result = new StreamResult(f);
-		//StreamResult result = new StreamResult(System.out);
-		transformer.transform(dom, result);
-	}
 
 	public MappingId getId() {
 		if (id == null) {
@@ -96,14 +87,14 @@ public class Mapping {
 	}
 
 	public void addPattern2Pattern(Pattern2Pattern p2p) throws Pattern2PatternNotExistsException {
-		if (this.containsPattern2Pattern(p2p)) {
+		if (this.contains(p2p)) {
 			throw new Pattern2PatternNotExistsException();
 		}
 		
 		pattern2PatternMappings.add(p2p);
 	}
 
-	private boolean containsPattern2Pattern(Pattern2Pattern p2p) {
+	private boolean contains(Pattern2Pattern p2p) {
 		return pattern2PatternMappings.contains(p2p);
 	}
 }
