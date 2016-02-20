@@ -36,7 +36,6 @@ public class XMLScheme extends Scheme {
 		   if (o.getName().equals(entity.getName())) {
 			   return true;
 		   }
-		   //System.out.println("{"+o.getNamespace()+"}"+o.getName());
 		}
 
 		return false;

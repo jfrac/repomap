@@ -9,9 +9,11 @@ import tfg.repomap.scheme.Scheme;
 
 public interface MappingDAO {
 	
-	Mapping create(Scheme sourceScheme, Scheme targetScheme) throws XMLMappingDAOException;
+	Mapping create(Scheme sourceScheme, Scheme targetScheme)
+		throws XMLMappingDAOException;
 	
-	Mapping findById(MappingId mappingId) throws XMLMappingDAOException;
+	Mapping findById(MappingId mappingId) 
+		throws XMLMappingDAOException;
 	
 	Collection<Mapping> findAll();
 	

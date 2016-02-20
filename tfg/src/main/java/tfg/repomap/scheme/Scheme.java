@@ -15,7 +15,7 @@ public abstract class Scheme {
 	@XmlAttribute
 	private String type;
 	
-	public Scheme() {
+	protected Scheme() {
 		// because JAXB
 	}
 	

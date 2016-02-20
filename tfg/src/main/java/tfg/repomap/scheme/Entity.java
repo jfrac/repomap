@@ -13,7 +13,7 @@ public class Entity {
 		this.name = name;
 	}
 	
-	public Entity() {
+	protected Entity() {
 		
 	}
 	

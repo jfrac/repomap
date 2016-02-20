@@ -24,6 +24,17 @@ public class Entity2Entity {
 		
 	}
 	
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}
+	
+	public boolean equals(Entity2Entity obj) {
+		return obj.getSource().equals(getSource())
+			   && obj.getTarget().equals(getTarget());
+	}
+	
 	public Entity getSource() {
 		return new Entity(source);
 	}

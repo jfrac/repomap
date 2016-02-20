@@ -13,7 +13,7 @@ public class Pattern {
 		this.pattern = pattern.getPattern();
 	}
 	
-	private Pattern() {
+	protected Pattern() {
 	}
 	
 	public Pattern(String pattern) {

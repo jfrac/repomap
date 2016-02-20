@@ -1,19 +1,12 @@
 package tfg.repomap.mapping;
 
-import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.w3c.dom.Document;
 
 import tfg.repomap.scheme.Scheme;
@@ -35,11 +28,11 @@ public class Mapping {
 	
 	@XmlElements(@XmlElement(name="entity2entity", type=Entity2Entity.class))
 	@XmlElementWrapper
-	private List<Entity2Entity> entity2EntityMappings;
+	private Set<Entity2Entity> entity2EntityMappings;
 	
 	@XmlElements(@XmlElement(name="pattern2pattern", type=Pattern2Pattern.class))
 	@XmlElementWrapper
-	private List<Pattern2Pattern> pattern2PatternMappings;
+	private Set<Pattern2Pattern> pattern2PatternMappings;
 
 	public Mapping(Scheme source, Scheme target) {
 		this();
@@ -48,14 +41,10 @@ public class Mapping {
 		this.id = new MappingId(source, target);
 	}
 	
-	public Mapping() {
+	private Mapping() {
 		super();
-		entity2EntityMappings = new LinkedList<Entity2Entity>();
-		pattern2PatternMappings = new LinkedList<Pattern2Pattern>();
-	}
-	
-	public boolean contains(Entity2Entity e2e) {
-		return entity2EntityMappings.contains(e2e);
+		entity2EntityMappings = new HashSet<Entity2Entity>();
+		pattern2PatternMappings = new HashSet<Pattern2Pattern>();
 	}
 	
 	public void addEntity2Entity(Entity2Entity e2e) 
@@ -93,8 +82,12 @@ public class Mapping {
 		
 		pattern2PatternMappings.add(p2p);
 	}
-
-	private boolean contains(Pattern2Pattern p2p) {
+	
+	protected boolean contains(Entity2Entity e2e) {
+		return entity2EntityMappings.contains(e2e);
+	}
+	
+	protected boolean contains(Pattern2Pattern p2p) {
 		return pattern2PatternMappings.contains(p2p);
 	}
 }

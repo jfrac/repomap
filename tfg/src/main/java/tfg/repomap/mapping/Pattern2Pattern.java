@@ -19,7 +19,7 @@ public class Pattern2Pattern {
 		this.target = target;
 	}
 	
-	private Pattern2Pattern() {
+	protected Pattern2Pattern() {
 		
 	}
 	

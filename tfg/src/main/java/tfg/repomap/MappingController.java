@@ -3,8 +3,6 @@ package tfg.repomap;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.w3c.dom.bootstrap.DOMImplementationRegistry;
-
 import tfg.repomap.dao.DAOFactory;
 import tfg.repomap.dao.MappingDAO;
 import tfg.repomap.dao.xml.XMLMappingDAOException;
