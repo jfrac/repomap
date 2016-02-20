@@ -5,7 +5,7 @@ import java.net.URL;
 
 import tfg.repomap.dao.DAOFactory;
 import tfg.repomap.dao.MappingDAO;
-import tfg.repomap.dao.xml.XMLMappingDAOException;
+import tfg.repomap.dao.MappingDAOException;
 import tfg.repomap.mapping.Entity2Entity;
 import tfg.repomap.mapping.Entity2EntityExistsException;
 import tfg.repomap.mapping.Mapping;
@@ -33,7 +33,7 @@ public class MappingController {
 			Pattern2Pattern p2p = new Pattern2Pattern(srcPattern, trgPattern);
 			mapping.addPattern2Pattern(p2p);
 			this.saveMapping(mapping);
-		} catch (XMLMappingDAOException e) {
+		} catch (MappingDAOException e) {
 			e.printStackTrace();
 		} catch (OWLSchemeException e) {
 			e.printStackTrace();
@@ -53,7 +53,7 @@ public class MappingController {
 			Entity2Entity e2e = new Entity2Entity(srcEntity, trgEntity);
 			mapping.addEntity2Entity(e2e);
 			this.saveMapping(mapping);
-		} catch (XMLMappingDAOException e) {
+		} catch (MappingDAOException e) {
 			e.printStackTrace();
 		}  catch (Entity2EntityExistsException e) {
 			e.printStackTrace();
@@ -65,7 +65,7 @@ public class MappingController {
 	}
 	
 	protected void saveMapping(Mapping mapping) 
-			throws XMLMappingDAOException {
+			throws MappingDAOException {
 		MappingDAO mappingDAO = DAOFactory.getDAO();
 		mappingDAO.update(mapping);
 	}
@@ -73,7 +73,7 @@ public class MappingController {
 	protected Mapping getMapping(
 			URL srcScheme, 
 			URL trgScheme
-	) throws XMLMappingDAOException, OWLSchemeException {
+	) throws MappingDAOException, OWLSchemeException {
 		XMLScheme xmlScheme = new XMLScheme(srcScheme);
 		OWLScheme owlScheme = new OWLScheme(trgScheme);
 		

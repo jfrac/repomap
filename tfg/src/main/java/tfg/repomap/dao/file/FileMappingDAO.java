@@ -1,4 +1,4 @@
-package tfg.repomap.dao.xml;
+package tfg.repomap.dao.file;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,25 +10,19 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import tfg.repomap.dao.MappingDAO;
+import tfg.repomap.dao.AbstractMappingDAO;
+import tfg.repomap.dao.MappingDAOException;
 import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingId;
-import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.owl.OWLScheme;
 import tfg.repomap.scheme.xml.XMLScheme;
 
-public class XMLMappingDAO implements MappingDAO {
-
+public class FileMappingDAO extends AbstractMappingDAO
+{
 	private static final String BASE_PATH = "."; 
-
-	public Mapping create(Scheme sourceScheme, Scheme targetScheme) 
-			throws XMLMappingDAOException {
-		Mapping mapping = new Mapping(sourceScheme, targetScheme);
-		save(mapping);
-		return mapping;
-	}
-
-	public Mapping findById(MappingId mappingId) throws XMLMappingDAOException {
+	
+	@Override
+	public Mapping findById(MappingId mappingId) throws MappingDAOException {
 		String filePath = this.getFilePath(mappingId);
 		File mapping = new File(filePath);
 		
@@ -40,25 +34,28 @@ public class XMLMappingDAO implements MappingDAO {
 			return this.loadFromFile(new File(filePath));
 		} catch (JAXBException e) {
 			e.printStackTrace();
-			throw new XMLMappingDAOException();
+			throw new MappingDAOException();
 		}
 	}
 
+	@Override
 	public Collection<Mapping> findAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void update(Mapping mapping) throws XMLMappingDAOException {
+	@Override
+	public void update(Mapping mapping) throws MappingDAOException {
 		save(mapping);
 	}
 
+	@Override
 	public boolean remove(MappingId mappingId) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 	
-	protected void save(Mapping mapping) throws XMLMappingDAOException {
+	protected void save(Mapping mapping) throws MappingDAOException {
 		File file = new File(this.getFilePath(mapping.getId()));
 		JAXBContext jaxbContext;
 		try {
@@ -68,9 +65,9 @@ public class XMLMappingDAO implements MappingDAO {
 			jaxbMarshaller.marshal(mapping, new FileOutputStream(file));
 			//jaxbMarshaller.marshal(mapping, System.out);
 		} catch (JAXBException e) {
-			throw new XMLMappingDAOException();
+			throw new MappingDAOException();
 		} catch (FileNotFoundException e) {
-			throw new XMLMappingDAOException();
+			throw new MappingDAOException();
 		}
 	}
 	
