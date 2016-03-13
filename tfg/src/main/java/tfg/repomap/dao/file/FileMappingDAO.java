@@ -14,12 +14,21 @@ import tfg.repomap.dao.AbstractMappingDAO;
 import tfg.repomap.dao.MappingDAOException;
 import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingId;
+import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.owl.OWLScheme;
 import tfg.repomap.scheme.xml.XMLScheme;
 
 public class FileMappingDAO extends AbstractMappingDAO
 {
 	private static final String BASE_PATH = "."; 
+	
+	@Override
+	public Mapping create(Scheme sourceScheme, Scheme targetScheme) 
+			throws MappingDAOException {
+		Mapping mapping = super.create(sourceScheme, targetScheme);
+		save(mapping);
+		return mapping;
+	}
 	
 	@Override
 	public Mapping findById(MappingId mappingId) throws MappingDAOException {

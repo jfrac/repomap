@@ -17,7 +17,7 @@ import tfg.repomap.scheme.entity.EntityNotFoundException;
 public class Mapping {
 
 	@XmlElement
-	private Scheme source;
+	public Scheme source;
 
 	@XmlElement
 	private Scheme target;
@@ -57,9 +57,9 @@ public class Mapping {
 			throw new EntityNotFoundException();
 		}
 		
-		if (!this.target.hasEntity(e2e.getTarget())) {
+		/*if (!this.target.hasEntity(e2e.getTarget())) {
 			throw new EntityNotFoundException();
-		}
+		}*/
 		
 		entity2EntityMappings.add(e2e);
 	}

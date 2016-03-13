@@ -5,6 +5,10 @@ import tfg.repomap.scheme.Scheme;
 public class MappingId {
 	
 	private String id;
+		
+	public MappingId() {
+		
+	}
 	
 	public MappingId(Scheme source, Scheme target) {
 		int prime = 31;

@@ -50,6 +50,7 @@ public class MappingController {
 	) {
 		try {
 			Mapping mapping = this.getMapping(srcScheme, trgScheme);
+			//Mapping mapping = new Mapping(new XMLScheme(srcScheme), new OWLScheme(trgScheme));
 			Entity2Entity e2e = new Entity2Entity(srcEntity, trgEntity);
 			mapping.addEntity2Entity(e2e);
 			this.saveMapping(mapping);
@@ -90,12 +91,12 @@ public class MappingController {
 		
 		try {
 			URL xmlSchema = new URL("https://www.w3.org/2001/XMLSchema.xsd");
-			URL owlSchema = new URL("http://miuras.inf.um.es/ontologies/eco_punned.owl");
+			URL owlSchema = new URL("http://www.cs.toronto.edu/~yuana/research/maponto/ka.owl");
 			
 			MappingController controller = new MappingController();
 			
 			Entity xmlElement = new Entity("complexContent");
-			Entity owlClass = new Entity("ECO_0000105");
+			Entity owlClass = new Entity("Researcher");
 			controller.mapEntity2Entity(xmlSchema, xmlElement, owlSchema, owlClass);
 			
 			Pattern xmlPattern = new Pattern("xml");

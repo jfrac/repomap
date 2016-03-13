@@ -14,7 +14,7 @@ public class XMLScheme extends Scheme {
 	private Document xml;
 	
 	public XMLScheme() {
-		
+		super();
 	}
 	
 	public XMLScheme(URL schemeURL) {
