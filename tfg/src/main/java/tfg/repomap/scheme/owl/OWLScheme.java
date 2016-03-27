@@ -41,9 +41,9 @@ public class OWLScheme extends Scheme {
 			owlScheme = manager.loadOntologyFromOntologyDocument(IRI.create(this.getURL()));
 			return owlScheme;
 		} catch (OWLOntologyCreationException e) {
-			throw new OWLSchemeException();
+			throw new OWLSchemeException(e);
 		} catch (URISyntaxException e) {
-			throw new OWLSchemeException();
+			throw new OWLSchemeException(e);
 		}
 	}
 	

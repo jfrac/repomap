@@ -47,7 +47,7 @@ public class MappingController {
 			Entity srcEntity,
 			URL trgScheme,
 			Entity trgEntity
-	) {
+	) throws MapEntity2EntityException {
 		try {
 			Mapping mapping = this.getMapping(srcScheme, trgScheme);
 			//Mapping mapping = new Mapping(new XMLScheme(srcScheme), new OWLScheme(trgScheme));
@@ -55,13 +55,13 @@ public class MappingController {
 			mapping.addEntity2Entity(e2e);
 			this.saveMapping(mapping);
 		} catch (MappingDAOException e) {
-			e.printStackTrace();
+			throw new MapEntity2EntityException(e);
 		}  catch (Entity2EntityExistsException e) {
-			e.printStackTrace();
+			throw new MapEntity2EntityException(e);
 		} catch (EntityNotFoundException e) {
-			e.printStackTrace();
+			throw new MapEntity2EntityException(e);
 		} catch (SchemeException e) {
-			e.printStackTrace();
+			throw new MapEntity2EntityException(e);
 		}
 	}
 	
@@ -105,6 +105,9 @@ public class MappingController {
 			
 			System.out.println("Mapping generated!");
 		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (MapEntity2EntityException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
