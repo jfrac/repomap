@@ -131,4 +131,9 @@ public class MongoDBMappingDAO extends AbstractMappingDAO
 		Gson gson = gsonBuilder.create();
 		return gson;
 	}
+	
+	public void removeAll() {
+		BasicDBObject document = new BasicDBObject();
+		getCollection().remove(document);
+	}
 }

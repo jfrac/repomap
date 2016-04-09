@@ -2,7 +2,6 @@ package tfg.repomap.dao.mongodb;
 
 import java.net.UnknownHostException;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 
 public class MongoDBMappingDAOStub
@@ -17,11 +16,5 @@ public class MongoDBMappingDAOStub
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	// Limpia el collection
-	public void clear() {
-		BasicDBObject document = new BasicDBObject();
-		getCollection().remove(document);
 	}
 }

@@ -8,6 +8,9 @@ import tfg.repomap.scheme.Scheme;
 
 public interface MappingDAO {
 	
+	Mapping create(Mapping mapping)
+			throws MappingDAOException;
+	
 	Mapping create(Scheme sourceScheme, Scheme targetScheme)
 		throws MappingDAOException;
 	
@@ -20,4 +23,5 @@ public interface MappingDAO {
 	
 	boolean remove(MappingId mappingId);
 	
+	void removeAll();
 }
