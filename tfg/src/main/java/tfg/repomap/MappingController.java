@@ -50,7 +50,6 @@ public class MappingController {
 	) throws MapEntity2EntityException {
 		try {
 			Mapping mapping = this.getMapping(srcScheme, trgScheme);
-			//Mapping mapping = new Mapping(new XMLScheme(srcScheme), new OWLScheme(trgScheme));
 			Entity2Entity e2e = new Entity2Entity(srcEntity, trgEntity);
 			mapping.addEntity2Entity(e2e);
 			this.saveMapping(mapping);

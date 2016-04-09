@@ -83,7 +83,7 @@ public class Mapping {
 		pattern2PatternMappings.add(p2p);
 	}
 	
-	protected boolean contains(Entity2Entity e2e) {
+	public boolean contains(Entity2Entity e2e) {
 		return entity2EntityMappings.contains(e2e);
 	}
 	

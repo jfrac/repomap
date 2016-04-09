@@ -18,6 +18,15 @@ public class MappingId {
 			      + prime + targetURLString.hashCode() + "";
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof MappingId)) {
+			return false;
+		}
+		MappingId mappingId = (MappingId) obj;
+		return id.equals(mappingId.getId());
+	}
+	
 	public String getId() {
 		return id;
 	}

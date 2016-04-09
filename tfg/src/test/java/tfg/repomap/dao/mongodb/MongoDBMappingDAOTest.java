@@ -5,8 +5,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import junit.framework.TestCase;
+import tfg.repomap.Entity2EntityBuilder;
 import tfg.repomap.MappingBuilder;
-import tfg.repomap.dao.MappingDAOException;
+import tfg.repomap.mapping.Entity2Entity;
 import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingId;
 
@@ -31,18 +32,24 @@ extends TestCase
 			dao.create(mapping);
 			mapping = dao.findById(mappingId);
 			
-			assertEquals(
-				mappingId.getId(), 
-				mapping.getId().getId()
+			assertTrue(
+				mappingId.equals(mapping.getId())
 			);
+			
+			Entity2Entity e2e = Entity2EntityBuilder.newE2E();
+			mapping.addEntity2Entity(e2e);
+			dao.update(mapping);
+			mapping = dao.findById(mappingId);
+			assertTrue(mapping.contains(e2e));
 			
 			dao.remove(mappingId);
 			mapping = dao.findById(mappingId);
 			assertNull(mapping);
 			
-		} catch (MappingDAOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 }
