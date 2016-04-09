@@ -14,6 +14,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException.DuplicateKey;
+import com.mongodb.WriteResult;
 import com.mongodb.util.JSON;
 
 import tfg.repomap.dao.AbstractMappingDAO;
@@ -40,6 +41,13 @@ public class MongoDBMappingDAO extends AbstractMappingDAO
 	public Mapping create(Scheme sourceScheme, Scheme targetScheme) 
 			throws MappingDAOException {
 		Mapping mapping = super.create(sourceScheme, targetScheme);
+		save(mapping);
+		return mapping;
+	}
+	
+	public Mapping create(Mapping mapping) 
+		throws MappingDAOException
+	{
 		save(mapping);
 		return mapping;
 	}
@@ -100,8 +108,10 @@ public class MongoDBMappingDAO extends AbstractMappingDAO
 
 	@Override
 	public boolean remove(MappingId mappingId) {
-		// TODO Auto-generated method stub
-		return false;
+		BasicDBObject query = new BasicDBObject();
+		query.append("_id", mappingId.getId());
+		WriteResult result = getCollection().remove(query);
+		return result.getN() > 0;
 	}
 
 	protected DBCollection getCollection() {

@@ -105,10 +105,9 @@ public class MappingController {
 			
 			System.out.println("Mapping generated!");
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			System.out.println("URL mal formada");
 		} catch (MapEntity2EntityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Error al añadir el mapeo e2e: " + e.getMessage());
 		}
 	}
 
