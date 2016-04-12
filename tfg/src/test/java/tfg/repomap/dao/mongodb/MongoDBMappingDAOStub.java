@@ -7,7 +7,6 @@ import com.mongodb.MongoClient;
 public class MongoDBMappingDAOStub
 	extends MongoDBMappingDAO
 {
-	// Sobreescribimos para cargar una base de datos diferente para tests
 	public MongoDBMappingDAOStub() {
 		try {
 			MongoClient mongoClient = new MongoClient("localhost", 27017);

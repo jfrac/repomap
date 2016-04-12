@@ -27,18 +27,18 @@ public class MappingController {
 		Pattern srcPattern,
 		URL trgScheme,
 		Pattern trgPattern
-	) {
+	) throws MapPattern2PatternException {
 		try {
 			Mapping mapping = this.getMapping(srcScheme, trgScheme);
 			Pattern2Pattern p2p = new Pattern2Pattern(srcPattern, trgPattern);
 			mapping.addPattern2Pattern(p2p);
 			this.saveMapping(mapping);
 		} catch (MappingDAOException e) {
-			e.printStackTrace();
+			throw new MapPattern2PatternException(e);
 		} catch (OWLSchemeException e) {
-			e.printStackTrace();
+			throw new MapPattern2PatternException(e);
 		} catch (Pattern2PatternNotExistsException e) {
-			e.printStackTrace();
+			throw new MapPattern2PatternException(e);
 		}
 	}
 	
@@ -107,6 +107,8 @@ public class MappingController {
 			System.out.println("URL mal formada");
 		} catch (MapEntity2EntityException e) {
 			System.out.println("Error al añadir el mapeo e2e: " + e.getMessage());
+		} catch (MapPattern2PatternException e) {
+			System.out.println("Error al añadir el mapeo p2p: " + e.getMessage());
 		}
 	}
 

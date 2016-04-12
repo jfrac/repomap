@@ -5,29 +5,50 @@ import tfg.repomap.scheme.Scheme;
 public class MappingId {
 	
 	private String id;
-		
+	
 	public MappingId() {
 		
 	}
 	
 	public MappingId(Scheme source, Scheme target) {
-		int prime = 31;
-		String sourceURLString = source.getURL().toString();
-		String targetURLString = target.getURL().toString();
-		this.id = prime + sourceURLString.hashCode() 
-			      + prime + targetURLString.hashCode() + "";
+		this.id = generateId(source, target)+"";
 	}
 	
-	@Override
+	/*@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof MappingId)) {
 			return false;
 		}
 		MappingId mappingId = (MappingId) obj;
 		return id.equals(mappingId.getId());
-	}
+	}*/
+	
+	
 	
 	public String getId() {
 		return id;
+	}
+
+	public int generateId(Scheme source, Scheme target) {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + source.hashCode();
+		result = prime * result + target.hashCode();
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MappingId other = (MappingId) obj;
+		String oId = other.getId();
+		String tId = this.getId();
+		boolean e = oId.equals(tId);
+		return e;
 	}
 }
