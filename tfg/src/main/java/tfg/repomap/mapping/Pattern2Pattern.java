@@ -14,20 +14,24 @@ public class Pattern2Pattern {
 	@XmlElement
 	private Pattern target;
 	
+	protected Pattern2Pattern() {}
+	
 	public Pattern2Pattern(Pattern source, Pattern target) {
+		this.validatePattern2Pattern(source, target);
 		this.source = source;
 		this.target = target;
 	}
 	
-	protected Pattern2Pattern() {
-		
+	protected void validatePattern2Pattern(Pattern source, Pattern target) {
+		// TODO validamos que las variables del mapping target 
+		// existen en el source.
 	}
 	
 	public Pattern getSource() {
-		return new Pattern(source);
+		return (Pattern)source.clone();
 	}
 	
 	public Pattern getTarget() {
-		return new Pattern(target);
+		return (Pattern)target.clone();
 	}
 }

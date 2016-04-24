@@ -22,7 +22,13 @@ public abstract class Scheme {
 	public Scheme(URL schemeURL) {
 		this.url = schemeURL;
 	}
-		
+	
+	/**
+	 * Validate the pattern
+	 * @param scheme
+	 */
+	abstract public void validate(Pattern pattern);
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

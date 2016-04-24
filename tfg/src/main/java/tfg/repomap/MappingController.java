@@ -13,26 +13,37 @@ import tfg.repomap.mapping.MappingId;
 import tfg.repomap.mapping.Pattern2Pattern;
 import tfg.repomap.mapping.Pattern2PatternNotExistsException;
 import tfg.repomap.scheme.Entity;
-import tfg.repomap.scheme.Pattern;
+import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.SchemeException;
 import tfg.repomap.scheme.entity.EntityNotFoundException;
 import tfg.repomap.scheme.owl.OWLScheme;
 import tfg.repomap.scheme.owl.OWLSchemeException;
+import tfg.repomap.scheme.pattern.OWLPattern;
+import tfg.repomap.scheme.pattern.VariableException;
+import tfg.repomap.scheme.pattern.XMLPattern;
 import tfg.repomap.scheme.xml.XMLScheme;
 
 public class MappingController {
 	
 	public void mapPattern2Pattern( 
 		URL srcScheme,
-		Pattern srcPattern,
+		XMLPattern srcPattern,
 		URL trgScheme,
-		Pattern trgPattern
+		OWLPattern trgPattern
 	) throws MapPattern2PatternException {
 		try {
-			Mapping mapping = this.getMapping(srcScheme, trgScheme);
+			XMLScheme xmlScheme = new XMLScheme(srcScheme);
+			xmlScheme.validate(srcPattern);
+			
+			OWLScheme owlScheme = new OWLScheme(trgScheme);
+			owlScheme.validate(trgPattern);
+			
+			Mapping mapping = this.getMapping(xmlScheme, owlScheme);
 			Pattern2Pattern p2p = new Pattern2Pattern(srcPattern, trgPattern);
+			
 			mapping.addPattern2Pattern(p2p);
 			this.saveMapping(mapping);
+			
 		} catch (MappingDAOException e) {
 			throw new MapPattern2PatternException(e);
 		} catch (OWLSchemeException e) {
@@ -49,7 +60,9 @@ public class MappingController {
 			Entity trgEntity
 	) throws MapEntity2EntityException {
 		try {
-			Mapping mapping = this.getMapping(srcScheme, trgScheme);
+			Scheme xmlScheme = new XMLScheme(srcScheme);
+			OWLScheme owlScheme = new OWLScheme(trgScheme);
+			Mapping mapping = this.getMapping(xmlScheme, owlScheme);
 			Entity2Entity e2e = new Entity2Entity(srcEntity, trgEntity);
 			mapping.addEntity2Entity(e2e);
 			this.saveMapping(mapping);
@@ -71,17 +84,16 @@ public class MappingController {
 	}
 	
 	protected Mapping getMapping(
-			URL srcScheme, 
-			URL trgScheme
+			Scheme srcScheme, 
+			OWLScheme trgScheme
 	) throws MappingDAOException, OWLSchemeException {
-		XMLScheme xmlScheme = new XMLScheme(srcScheme);
-		OWLScheme owlScheme = new OWLScheme(trgScheme);
+		
 		
 		MappingDAO mappingDAO = DAOFactory.getDAO();
-		MappingId mappingId = new MappingId(xmlScheme, owlScheme);
+		MappingId mappingId = new MappingId(srcScheme, trgScheme);
 		Mapping mapping = mappingDAO.findById(mappingId);
 		if (mapping == null) {
-			mapping = mappingDAO.create(xmlScheme, owlScheme);
+			mapping = mappingDAO.create(srcScheme, trgScheme);
 		}
 		return mapping;
 	}
@@ -94,12 +106,16 @@ public class MappingController {
 			
 			MappingController controller = new MappingController();
 			
-			Entity xmlElement = new Entity("complexContent");
+			Entity xmlElement = new Entity("atribute");
 			Entity owlClass = new Entity("Researcher");
 			controller.mapEntity2Entity(xmlSchema, xmlElement, owlSchema, owlClass);
 			
-			Pattern xmlPattern = new Pattern("xml");
-			Pattern oppl2Pattern = new Pattern("oppl2");
+			XMLPattern xmlPattern = new XMLPattern(
+					"<atribute use=\"?use\">"
+					+ "<simpleType>?type</simpleType>"
+			);
+			
+			OWLPattern oppl2Pattern = new OWLPattern("oppl2");
 			controller.mapPattern2Pattern(xmlSchema, xmlPattern, owlSchema, oppl2Pattern);
 			
 			System.out.println("Mapping generated!");
@@ -109,6 +125,8 @@ public class MappingController {
 			System.out.println("Error al añadir el mapeo e2e: " + e.getMessage());
 		} catch (MapPattern2PatternException e) {
 			System.out.println("Error al añadir el mapeo p2p: " + e.getMessage());
+		} catch (VariableException e) {
+			System.out.println("Error al obtener las variables del patrón: " + e.getMessage());
 		}
 	}
 

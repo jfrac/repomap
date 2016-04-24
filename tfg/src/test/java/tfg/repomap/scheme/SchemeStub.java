@@ -14,4 +14,10 @@ public class SchemeStub extends Scheme {
 		return true;
 	}
 
+	@Override
+	public void validate(Pattern pattern) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
