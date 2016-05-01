@@ -15,13 +15,12 @@ import tfg.repomap.scheme.Pattern;
 
 public class XMLPattern extends Pattern {
 	
-	protected Set<String> variables; 
-
 	public XMLPattern(String pattern) throws VariableException {
 		super(pattern);
-		variables = new HashSet<String>();
 		extractVariables();
 	}
+	
+	protected XMLPattern() {}
 	
 	protected void extractVariables() throws VariableException {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -63,7 +62,7 @@ public class XMLPattern extends Pattern {
 		if (n.getNodeValue() != null
 			&& n.getNodeValue().startsWith("?")
 		) {
-			this.variables.add(n.getNodeValue());
+			addVariable(n.getNodeValue());
 		}
 	}
 	

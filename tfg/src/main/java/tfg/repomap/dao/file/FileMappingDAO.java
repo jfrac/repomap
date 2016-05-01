@@ -16,6 +16,8 @@ import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingId;
 import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.owl.OWLScheme;
+import tfg.repomap.scheme.pattern.OWLPattern;
+import tfg.repomap.scheme.pattern.XMLPattern;
 import tfg.repomap.scheme.xml.XMLScheme;
 
 public class FileMappingDAO extends AbstractMappingDAO
@@ -98,7 +100,9 @@ public class FileMappingDAO extends AbstractMappingDAO
 		JAXBContext jaxbContext = JAXBContext.newInstance(
 			Mapping.class, 
 			OWLScheme.class, 
-			XMLScheme.class
+			XMLScheme.class,
+			XMLPattern.class,
+			OWLPattern.class
 		);
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 		Mapping mapping = (Mapping) jaxbUnmarshaller.unmarshal(file);
@@ -113,7 +117,6 @@ public class FileMappingDAO extends AbstractMappingDAO
 
 	@Override
 	public void removeAll() {
-		// TODO Auto-generated method stub
 		File folder = new File(BASE_PATH);
 		
 		for(File file: folder.listFiles()) 

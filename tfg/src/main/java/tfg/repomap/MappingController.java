@@ -13,6 +13,7 @@ import tfg.repomap.mapping.MappingId;
 import tfg.repomap.mapping.Pattern2Pattern;
 import tfg.repomap.mapping.Pattern2PatternNotExistsException;
 import tfg.repomap.scheme.Entity;
+import tfg.repomap.scheme.Pattern;
 import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.SchemeException;
 import tfg.repomap.scheme.entity.EntityNotFoundException;
@@ -27,7 +28,7 @@ public class MappingController {
 	
 	public void mapPattern2Pattern( 
 		URL srcScheme,
-		XMLPattern srcPattern,
+		Pattern srcPattern,
 		URL trgScheme,
 		OWLPattern trgPattern
 	) throws MapPattern2PatternException {
@@ -110,12 +111,24 @@ public class MappingController {
 			Entity owlClass = new Entity("ModelingLanguage");
 			controller.mapEntity2Entity(xmlSchema, xmlElement, owlSchema, owlClass);
 			
-			XMLPattern xmlPattern = new XMLPattern(
-					"<atribute use=\"?use\">"
+			Pattern xmlPattern = new XMLPattern(
+					"<schema>"
+					+ "<atribute use=\"?use\"></atribute>"
 					+ "<simpleType>?type</simpleType>"
+					+ "</schema>"
 			);
 			
-			OWLPattern oppl2Pattern = new OWLPattern("oppl2");
+			String opplScriptString = "";
+	        opplScriptString = "?x:CLASS"+"\n";
+			opplScriptString += "SELECT "+"\n";
+			opplScriptString += "?x SubClassOf molecular_function "+"\n";
+			opplScriptString += "WHERE "+"\n";
+			opplScriptString += "?x Match(\"hormone receptor binding\")"+"\n";
+			opplScriptString += "BEGIN "+"\n";
+			opplScriptString += "ADD ?x SubClassOf binding "+"\n";
+			opplScriptString += "END;";
+			
+			OWLPattern oppl2Pattern = new OWLPattern(opplScriptString);
 			controller.mapPattern2Pattern(xmlSchema, xmlPattern, owlSchema, oppl2Pattern);
 			
 			System.out.println("Mapping generated!");

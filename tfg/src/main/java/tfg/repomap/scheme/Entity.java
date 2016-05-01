@@ -13,9 +13,7 @@ public class Entity {
 		this.name = name;
 	}
 	
-	protected Entity() {
-		
-	}
+	protected Entity() {}
 	
 	@Override
 	public int hashCode() {

@@ -56,5 +56,10 @@
 			<artifactId>gson</artifactId>
 			<version>1.7.1</version>
 		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>oppl2-oppl2plugin</artifactId>
+			<version>3.5.0</version>
+		</dependency>
 	</dependencies>
 </project>
