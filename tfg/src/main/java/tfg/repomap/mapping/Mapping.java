@@ -48,7 +48,10 @@ public class Mapping {
 	}
 	
 	public void addEntity2Entity(Entity2Entity e2e) 
-			throws Entity2EntityExistsException, EntityNotFoundException, SchemeException {
+		throws Entity2EntityExistsException, 
+			   EntityNotFoundException, 
+			   SchemeException
+	{
 		if (this.contains(e2e)) {
 			throw new Entity2EntityExistsException();
 		}
@@ -57,9 +60,9 @@ public class Mapping {
 			throw new EntityNotFoundException();
 		}
 		
-		/*if (!this.target.hasEntity(e2e.getTarget())) {
+		if (!this.target.hasEntity(e2e.getTarget())) {
 			throw new EntityNotFoundException();
-		}*/
+		}
 		
 		entity2EntityMappings.add(e2e);
 	}

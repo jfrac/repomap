@@ -106,8 +106,8 @@ public class MappingController {
 			
 			MappingController controller = new MappingController();
 			
-			Entity xmlElement = new Entity("atribute");
-			Entity owlClass = new Entity("Researcher");
+			Entity xmlElement = new Entity("schema");
+			Entity owlClass = new Entity("ModelingLanguage");
 			controller.mapEntity2Entity(xmlSchema, xmlElement, owlSchema, owlClass);
 			
 			XMLPattern xmlPattern = new XMLPattern(
