@@ -1,5 +1,7 @@
 package tfg.repomap.mapping;
 
+import java.util.Set;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -16,15 +18,20 @@ public class Pattern2Pattern {
 	
 	protected Pattern2Pattern() {}
 	
-	public Pattern2Pattern(Pattern source, Pattern target) {
+	public Pattern2Pattern(Pattern source, Pattern target) 
+			throws Pattern2PatternNotSameVariables {
 		this.validatePattern2Pattern(source, target);
 		this.source = source;
 		this.target = target;
 	}
 	
-	protected void validatePattern2Pattern(Pattern source, Pattern target) {
-		// TODO validamos que las variables del mapping target 
-		// existen en el source.
+	protected void validatePattern2Pattern(Pattern source, Pattern target) 
+			throws Pattern2PatternNotSameVariables {
+		Set<String> variablesSource = source.getVariables();
+		Set<String> variablesTarget = target.getVariables();
+		if (!variablesSource.equals(variablesTarget)) {
+			throw new Pattern2PatternNotSameVariables();
+		}
 	}
 	
 	public Pattern getSource() {

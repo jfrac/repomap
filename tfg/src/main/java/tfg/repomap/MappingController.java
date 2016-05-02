@@ -11,7 +11,6 @@ import tfg.repomap.mapping.Entity2EntityExistsException;
 import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingId;
 import tfg.repomap.mapping.Pattern2Pattern;
-import tfg.repomap.mapping.Pattern2PatternNotExistsException;
 import tfg.repomap.scheme.Entity;
 import tfg.repomap.scheme.Pattern;
 import tfg.repomap.scheme.Scheme;
@@ -45,11 +44,7 @@ public class MappingController {
 			mapping.addPattern2Pattern(p2p);
 			this.saveMapping(mapping);
 			
-		} catch (MappingDAOException e) {
-			throw new MapPattern2PatternException(e);
-		} catch (OWLSchemeException e) {
-			throw new MapPattern2PatternException(e);
-		} catch (Pattern2PatternNotExistsException e) {
+		} catch (Exception e) {
 			throw new MapPattern2PatternException(e);
 		}
 	}
@@ -113,8 +108,8 @@ public class MappingController {
 			
 			Pattern xmlPattern = new XMLPattern(
 					"<schema>"
-					+ "<atribute use=\"?use\"></atribute>"
-					+ "<simpleType>?type</simpleType>"
+					+ "<atribute ></atribute>"
+					+ "<simpleType>?x</simpleType>"
 					+ "</schema>"
 			);
 			

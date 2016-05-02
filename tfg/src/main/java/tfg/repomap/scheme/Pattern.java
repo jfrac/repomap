@@ -14,7 +14,7 @@ abstract public class Pattern implements Cloneable {
 	@XmlElement
 	private String pattern;
 	protected Set<String> variables;
-	
+
 	protected Pattern() {
 		super();
 		variables = new HashSet<String>();
@@ -30,6 +30,10 @@ abstract public class Pattern implements Cloneable {
 	}
 	
 	abstract protected void extractVariables() throws VariableException;
+	
+	public Set<String> getVariables() {
+		return variables;
+	}
 	
 	protected void addVariable(String var) {
 		variables.add(var);
