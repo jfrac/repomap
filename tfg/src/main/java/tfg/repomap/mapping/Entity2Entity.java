@@ -3,7 +3,7 @@ package tfg.repomap.mapping;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import tfg.repomap.scheme.Entity;
+import tfg.repomap.scheme.entity.Entity;
 
 @XmlRootElement
 public class Entity2Entity {

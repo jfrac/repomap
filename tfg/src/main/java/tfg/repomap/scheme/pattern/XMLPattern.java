@@ -11,7 +11,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import tfg.repomap.scheme.Pattern;
 
 public class XMLPattern extends Pattern {
 	

@@ -1,7 +1,6 @@
 package tfg.repomap.scheme.entity;
 
+@SuppressWarnings("serial")
 public class EntityNotFoundException extends Exception {
-
-	private static final long serialVersionUID = 1L;
 
 }

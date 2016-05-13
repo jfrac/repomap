@@ -1,12 +1,10 @@
-package tfg.repomap.scheme;
+package tfg.repomap.scheme.pattern;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import tfg.repomap.scheme.pattern.VariableException;
 
 @XmlRootElement
 abstract public class Pattern implements Cloneable {

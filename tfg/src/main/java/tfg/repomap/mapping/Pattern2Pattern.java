@@ -5,7 +5,7 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import tfg.repomap.scheme.Pattern;
+import tfg.repomap.scheme.pattern.Pattern;
 
 @XmlRootElement
 public class Pattern2Pattern {

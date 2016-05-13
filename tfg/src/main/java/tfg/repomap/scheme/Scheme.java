@@ -7,6 +7,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+import tfg.repomap.scheme.entity.Entity;
+import tfg.repomap.scheme.pattern.Pattern;
+
 @XmlAccessorType(XmlAccessType.NONE)
 public abstract class Scheme {
 	

@@ -7,10 +7,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import junit.framework.TestCase;
-import tfg.repomap.scheme.Entity;
 import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.SchemeException;
 import tfg.repomap.scheme.SchemeStub;
+import tfg.repomap.scheme.entity.Entity;
 import tfg.repomap.scheme.entity.EntityNotFoundException;
 
 @RunWith(JUnit4.class)

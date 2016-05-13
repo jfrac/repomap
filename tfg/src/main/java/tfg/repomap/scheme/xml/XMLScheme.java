@@ -6,9 +6,10 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import tfg.repomap.scheme.Entity;
-import tfg.repomap.scheme.Pattern;
 import tfg.repomap.scheme.Scheme;
+import tfg.repomap.scheme.entity.Entity;
+import tfg.repomap.scheme.pattern.Pattern;
+
 import org.apache.xerces.xs.*;
 import org.apache.xerces.impl.xs.XMLSchemaLoader;
 

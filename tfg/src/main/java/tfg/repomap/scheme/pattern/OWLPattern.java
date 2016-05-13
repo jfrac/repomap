@@ -17,8 +17,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-import tfg.repomap.scheme.Pattern;
-
 public class OWLPattern extends Pattern {
 
 	public OWLPattern(String pattern) throws VariableException {

@@ -10,9 +10,9 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-import tfg.repomap.scheme.Entity;
-import tfg.repomap.scheme.Pattern;
 import tfg.repomap.scheme.Scheme;
+import tfg.repomap.scheme.entity.Entity;
+import tfg.repomap.scheme.pattern.Pattern;
 
 public class OWLScheme extends Scheme {
 

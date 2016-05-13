@@ -7,18 +7,18 @@ import tfg.repomap.dao.DAOFactory;
 import tfg.repomap.dao.MappingDAO;
 import tfg.repomap.dao.MappingDAOException;
 import tfg.repomap.mapping.Entity2Entity;
-import tfg.repomap.mapping.Entity2EntityExistsException;
 import tfg.repomap.mapping.Mapping;
+import tfg.repomap.mapping.MappingAlreadyExistsException;
 import tfg.repomap.mapping.MappingId;
 import tfg.repomap.mapping.Pattern2Pattern;
-import tfg.repomap.scheme.Entity;
-import tfg.repomap.scheme.Pattern;
 import tfg.repomap.scheme.Scheme;
-import tfg.repomap.scheme.SchemeException;
-import tfg.repomap.scheme.entity.EntityNotFoundException;
+import tfg.repomap.scheme.SchemeFactory;
+import tfg.repomap.scheme.SchemeFactoryException;
+import tfg.repomap.scheme.entity.Entity;
 import tfg.repomap.scheme.owl.OWLScheme;
 import tfg.repomap.scheme.owl.OWLSchemeException;
 import tfg.repomap.scheme.pattern.OWLPattern;
+import tfg.repomap.scheme.pattern.Pattern;
 import tfg.repomap.scheme.pattern.VariableException;
 import tfg.repomap.scheme.pattern.XMLPattern;
 import tfg.repomap.scheme.xml.XMLScheme;
@@ -62,14 +62,33 @@ public class MappingController {
 			Entity2Entity e2e = new Entity2Entity(srcEntity, trgEntity);
 			mapping.addEntity2Entity(e2e);
 			this.saveMapping(mapping);
+		} catch (Exception e) {
+			throw new MapEntity2EntityException(e);
+		}
+	}
+	
+	public Mapping createMapping(
+			URL srcSchemeURL,
+			URL trgSchemeURL
+	) throws MappingAlreadyExistsException, MappingControllerException {
+		
+		try {
+			Scheme srcScheme = SchemeFactory.create(srcSchemeURL);
+			Scheme trgScheme = SchemeFactory.create(trgSchemeURL);
+			
+			MappingId mappingId = new MappingId(srcScheme, trgScheme);
+			MappingDAO mappingDAO = getDAO();
+			if (mappingDAO.findById(mappingId) != null) {
+				throw new MappingAlreadyExistsException();
+			}
+			
+			Mapping mapping = new Mapping(srcScheme, trgScheme);
+			this.saveMapping(mapping);
+			return mapping;
+		} catch (SchemeFactoryException e) {
+			throw new MappingControllerException(e);
 		} catch (MappingDAOException e) {
-			throw new MapEntity2EntityException(e);
-		}  catch (Entity2EntityExistsException e) {
-			throw new MapEntity2EntityException(e);
-		} catch (EntityNotFoundException e) {
-			throw new MapEntity2EntityException(e);
-		} catch (SchemeException e) {
-			throw new MapEntity2EntityException(e);
+			throw new MappingControllerException(e);
 		}
 	}
 	
@@ -77,6 +96,11 @@ public class MappingController {
 			throws MappingDAOException {
 		MappingDAO mappingDAO = DAOFactory.getDAO();
 		mappingDAO.update(mapping);
+	}
+	
+	protected MappingDAO getDAO()
+	{
+		return DAOFactory.getDAO();
 	}
 	
 	protected Mapping getMapping(
@@ -124,7 +148,12 @@ public class MappingController {
 			opplScriptString += "END;";
 			
 			OWLPattern oppl2Pattern = new OWLPattern(opplScriptString);
-			controller.mapPattern2Pattern(xmlSchema, xmlPattern, owlSchema, oppl2Pattern);
+			controller.mapPattern2Pattern(
+				xmlSchema, 
+				xmlPattern, 
+				owlSchema, 
+				oppl2Pattern
+			);
 			
 			System.out.println("Mapping generated!");
 		} catch (MalformedURLException e) {
@@ -134,7 +163,8 @@ public class MappingController {
 		} catch (MapPattern2PatternException e) {
 			System.out.println("Error al añadir el mapeo p2p: " + e.getMessage());
 		} catch (VariableException e) {
-			System.out.println("Error al obtener las variables del patrón: " + e.getMessage());
+			System.out.println("Error al obtener las variables del patrón: " 
+					+ e.getMessage());
 		}
 	}
 
