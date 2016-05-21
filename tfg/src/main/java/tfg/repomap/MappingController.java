@@ -7,14 +7,20 @@ import tfg.repomap.dao.DAOFactory;
 import tfg.repomap.dao.MappingDAO;
 import tfg.repomap.dao.MappingDAOException;
 import tfg.repomap.mapping.Entity2Entity;
+import tfg.repomap.mapping.Entity2EntityExistsException;
 import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingAlreadyExistsException;
 import tfg.repomap.mapping.MappingId;
+import tfg.repomap.mapping.MappingNotExists;
 import tfg.repomap.mapping.Pattern2Pattern;
+import tfg.repomap.mapping.Pattern2PatternAlreadyExistsException;
+import tfg.repomap.mapping.Pattern2PatternNotSameVariables;
 import tfg.repomap.scheme.Scheme;
+import tfg.repomap.scheme.SchemeException;
 import tfg.repomap.scheme.SchemeFactory;
 import tfg.repomap.scheme.SchemeFactoryException;
 import tfg.repomap.scheme.entity.Entity;
+import tfg.repomap.scheme.entity.EntityNotFoundException;
 import tfg.repomap.scheme.owl.OWLScheme;
 import tfg.repomap.scheme.owl.OWLSchemeException;
 import tfg.repomap.scheme.pattern.OWLPattern;
@@ -67,6 +73,57 @@ public class MappingController {
 		}
 	}
 	
+	public void mapEntity2Entity(
+			MappingId mappingId,
+			String srcEntity,
+			String trgEntity
+	) throws MapEntity2EntityException, 
+		     MappingNotExists, 
+		     EntityNotFoundException, 
+		     Entity2EntityExistsException
+	{
+		try {
+			MappingDAO dao = getDAO();
+			Mapping mapping;
+			mapping = dao.findById(mappingId);
+			if (mapping == null) {
+				throw new MappingNotExists();
+			}
+			
+			mapping.addEntity2Entity(srcEntity, trgEntity);
+			this.saveMapping(mapping);
+		} catch (MappingDAOException e) {
+			throw new MapEntity2EntityException(e);
+		} catch (SchemeException e) {
+			throw new MapEntity2EntityException(e);
+		} 
+	}
+	
+	public void mapPattern2Pattern(
+		MappingId mappingId, 
+		String patternSource, 
+		String patternTarget
+	) throws MappingNotExists, 
+	         Pattern2PatternNotSameVariables, 
+	         VariableException, 
+	         Pattern2PatternAlreadyExistsException, 
+	         MapEntity2EntityException
+    {
+		try {
+			MappingDAO dao = getDAO();
+			Mapping mapping;
+			mapping = dao.findById(mappingId);
+			if (mapping == null) {
+				throw new MappingNotExists();
+			}
+			
+			mapping.addPattern2Pattern(patternSource, patternTarget);
+			this.saveMapping(mapping);
+		} catch (MappingDAOException e) {
+			throw new MapEntity2EntityException(e);
+		} 
+	}
+	
 	public Mapping createMapping(
 			URL srcSchemeURL,
 			URL trgSchemeURL
@@ -98,9 +155,9 @@ public class MappingController {
 		mappingDAO.update(mapping);
 	}
 	
-	protected MappingDAO getDAO()
-	{
-		return DAOFactory.getDAO();
+	public Mapping getMapping(MappingId mappingId) throws MappingDAOException {
+		MappingDAO mappingDAO = getDAO();
+		return mappingDAO.findById(mappingId);
 	}
 	
 	protected Mapping getMapping(
@@ -116,6 +173,11 @@ public class MappingController {
 			mapping = mappingDAO.create(srcScheme, trgScheme);
 		}
 		return mapping;
+	}
+	
+	protected MappingDAO getDAO()
+	{
+		return DAOFactory.getDAO();
 	}
 	
 	public static void main(String[] args) {

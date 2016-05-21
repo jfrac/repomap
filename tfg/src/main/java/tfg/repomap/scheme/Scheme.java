@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import tfg.repomap.scheme.entity.Entity;
 import tfg.repomap.scheme.pattern.Pattern;
+import tfg.repomap.scheme.pattern.VariableException;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public abstract class Scheme {
@@ -61,4 +62,6 @@ public abstract class Scheme {
 	public String getType() {
 		return type;
 	}
+
+	abstract public Pattern createPattern(String pattern) throws VariableException;
 }

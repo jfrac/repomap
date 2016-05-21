@@ -10,7 +10,13 @@ public class MappingId {
 		
 	}
 	
+	public MappingId(String id) {
+		this();
+		this.id = id;
+	}
+	
 	public MappingId(Scheme source, Scheme target) {
+		this();
 		this.id = generateId(source, target)+"";
 	}
 	

@@ -9,6 +9,8 @@ import org.xml.sax.SAXParseException;
 import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.entity.Entity;
 import tfg.repomap.scheme.pattern.Pattern;
+import tfg.repomap.scheme.pattern.VariableException;
+import tfg.repomap.scheme.pattern.XMLPattern;
 
 import org.apache.xerces.xs.*;
 import org.apache.xerces.impl.xs.XMLSchemaLoader;
@@ -76,6 +78,11 @@ public class XMLScheme extends Scheme {
 	
 	public String getType() {
 		return "xml";
+	}
+
+	@Override
+	public Pattern createPattern(String pattern) throws VariableException {
+		return new XMLPattern(pattern);
 	}
 }
 

@@ -7,11 +7,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.w3c.dom.Document;
-
 import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.SchemeException;
+import tfg.repomap.scheme.entity.Entity;
 import tfg.repomap.scheme.entity.EntityNotFoundException;
+import tfg.repomap.scheme.pattern.Pattern;
+import tfg.repomap.scheme.pattern.VariableException;
 
 @XmlRootElement(name = "mapping")
 public class Mapping {
@@ -21,9 +22,7 @@ public class Mapping {
 
 	@XmlElement
 	private Scheme target;
-	
-	private Document xml;
-	
+		
 	private MappingId id;
 	
 	@XmlElements(@XmlElement(name="entity2entity", type=Entity2Entity.class))
@@ -67,10 +66,17 @@ public class Mapping {
 		entity2EntityMappings.add(e2e);
 	}
 	
-	protected Document getXML() {
-		return this.xml;
+	public void addEntity2Entity(String srcEntity, String trgEntity) 
+		throws Entity2EntityExistsException, 
+			   EntityNotFoundException, 
+			   SchemeException
+	{
+		Entity src = new Entity(srcEntity);
+		Entity trg = new Entity(trgEntity);
+		Entity2Entity e2e = new Entity2Entity(src, trg);
+		this.addEntity2Entity(e2e);
 	}
-
+	
 	public MappingId getId() {
 		if (id == null) {
 			id = new MappingId(source, target);
@@ -78,9 +84,9 @@ public class Mapping {
 		return id;
 	}
 
-	public void addPattern2Pattern(Pattern2Pattern p2p) throws Pattern2PatternNotExistsException {
+	public void addPattern2Pattern(Pattern2Pattern p2p) throws Pattern2PatternAlreadyExistsException {
 		if (this.contains(p2p)) {
-			throw new Pattern2PatternNotExistsException();
+			throw new Pattern2PatternAlreadyExistsException();
 		}
 		
 		pattern2PatternMappings.add(p2p);
@@ -92,5 +98,18 @@ public class Mapping {
 	
 	protected boolean contains(Pattern2Pattern p2p) {
 		return pattern2PatternMappings.contains(p2p);
+	}
+
+	public void addPattern2Pattern(
+		String patternSourceString, 
+		String patternTargetString
+	) throws Pattern2PatternNotSameVariables, 
+		     VariableException, 
+		     Pattern2PatternAlreadyExistsException 
+	{
+		Pattern patternSource = source.createPattern(patternSourceString);
+		Pattern patternTarget = source.createPattern(patternTargetString);
+		Pattern2Pattern p2p = new Pattern2Pattern(patternSource, patternTarget);
+		this.addPattern2Pattern(p2p);
 	}
 }

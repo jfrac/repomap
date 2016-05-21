@@ -12,7 +12,9 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.entity.Entity;
+import tfg.repomap.scheme.pattern.OWLPattern;
 import tfg.repomap.scheme.pattern.Pattern;
+import tfg.repomap.scheme.pattern.VariableException;
 
 public class OWLScheme extends Scheme {
 
@@ -56,5 +58,10 @@ public class OWLScheme extends Scheme {
 	public void validate(Pattern pattern) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Pattern createPattern(String pattern) throws VariableException {
+		return new OWLPattern(pattern);
 	}
 }
