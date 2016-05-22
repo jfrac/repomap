@@ -127,7 +127,9 @@ public class MappingController {
 	public Mapping createMapping(
 			URL srcSchemeURL,
 			URL trgSchemeURL
-	) throws MappingAlreadyExistsException, MappingControllerException {
+	) throws MappingAlreadyExistsException, 
+			 MappingControllerException 
+	{
 		
 		try {
 			Scheme srcScheme = SchemeFactory.create(srcSchemeURL);
@@ -149,15 +151,35 @@ public class MappingController {
 		}
 	}
 	
+	public void updateMapping(Mapping mapping) 
+		throws MappingControllerException, 
+		MappingNotExists
+	{
+		if (getMapping(mapping.getId()) == null) {
+			throw new MappingNotExists();
+		}
+		try {
+			saveMapping(mapping);
+		} catch (MappingDAOException e) {
+			throw new MappingControllerException(e);
+		}
+	}
+	
 	protected void saveMapping(Mapping mapping) 
 			throws MappingDAOException {
 		MappingDAO mappingDAO = DAOFactory.getDAO();
 		mappingDAO.update(mapping);
 	}
 	
-	public Mapping getMapping(MappingId mappingId) throws MappingDAOException {
+	public Mapping getMapping(MappingId mappingId) 
+		throws MappingControllerException 
+	{
 		MappingDAO mappingDAO = getDAO();
-		return mappingDAO.findById(mappingId);
+		try {
+			return mappingDAO.findById(mappingId);
+		} catch (MappingDAOException e) {
+			throw new MappingControllerException(e);
+		}
 	}
 	
 	protected Mapping getMapping(
