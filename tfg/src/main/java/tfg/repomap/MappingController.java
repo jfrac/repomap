@@ -17,6 +17,9 @@ import tfg.repomap.mapping.pattern2pattern.Pattern2PatternAlreadyExistsException
 import tfg.repomap.mapping.pattern2pattern.Pattern2PatternNotSameVariables;
 import tfg.repomap.mapping.property2property.Property2Property;
 import tfg.repomap.mapping.property2property.Property2PropertyAlreadyExists;
+import tfg.repomap.mapping.relation2relation.Relation2Relation;
+import tfg.repomap.mapping.relation2relation.Relation2RelationAlreadyExists;
+import tfg.repomap.scheme.Relation;
 import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.SchemeException;
 import tfg.repomap.scheme.SchemeFactory;
@@ -32,6 +35,33 @@ import tfg.repomap.scheme.pattern.XMLPattern;
 import tfg.repomap.scheme.xml.XMLScheme;
 
 public class MappingController {
+	
+	public void mapRelations(
+			URL srcScheme, 
+			String srcEntity, 
+			String srcEntity2, 
+			URL trgScheme, 
+			String trgEntity, 
+			String trgEntity2
+		) throws MappingControllerException, Relation2RelationAlreadyExists {
+			try {
+				MappingId mappingId = new MappingId(srcScheme, trgScheme);
+				Mapping mapping = this.findOrCreateMapping(mappingId);
+				Relation relationSource = new Relation(srcEntity, srcEntity2);
+				Relation relationTarget = new Relation(trgEntity, trgEntity2);
+				Relation2Relation r2r = new Relation2Relation(
+					relationSource,
+					relationTarget
+				);
+				mapping.addRelation2Relation(r2r);
+			} catch (MappingDAOException e) {
+				throw new MappingControllerException(e);
+			} catch (MalformedURLException e) {
+				throw new MappingControllerException(e);
+			} catch (SchemeFactoryException e) {
+				throw new MappingControllerException(e);
+			}
+		}
 	
 	public void mapProperties(
 		URL srcScheme, 

@@ -15,6 +15,8 @@ import tfg.repomap.mapping.pattern2pattern.Pattern2PatternAlreadyExistsException
 import tfg.repomap.mapping.pattern2pattern.Pattern2PatternNotSameVariables;
 import tfg.repomap.mapping.property2property.Property2Property;
 import tfg.repomap.mapping.property2property.Property2PropertyAlreadyExists;
+import tfg.repomap.mapping.relation2relation.Relation2Relation;
+import tfg.repomap.mapping.relation2relation.Relation2RelationAlreadyExists;
 import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.SchemeException;
 import tfg.repomap.scheme.entity.Entity;
@@ -53,11 +55,17 @@ public class Mapping {
 	@XmlElementWrapper
 	private Set<Property2Property> property2PropertyMappings;
 	
+	@XmlElements(@XmlElement(name="relation2relation", type=Relation2Relation.class))
+	@XmlElementWrapper
+	private Set<Relation2Relation> relation2RelationMappings;
+	
+	
 	private Mapping() {
 		super();
 		entity2EntityMappings = new HashSet<Entity2Entity>();
 		pattern2PatternMappings = new HashSet<Pattern2Pattern>();
 		property2PropertyMappings = new HashSet<Property2Property>();
+		relation2RelationMappings = new HashSet<Relation2Relation>();
 	}
 	
 	public Mapping(Scheme source, Scheme target) {
@@ -133,6 +141,10 @@ public class Mapping {
 		return property2PropertyMappings.contains(p2p);
 	}
 
+	public boolean contains(Relation2Relation r2r) {
+		return relation2RelationMappings.contains(r2r);
+	}
+	
 	public void addPattern2Pattern(
 		String patternSourceString, 
 		String patternTargetString
@@ -152,5 +164,12 @@ public class Mapping {
 			throw new Property2PropertyAlreadyExists();
 		}
 		this.property2PropertyMappings.add(p2p);
+	}
+
+	public void addRelation2Relation(Relation2Relation r2r) throws Relation2RelationAlreadyExists {
+		if (this.relation2RelationMappings.contains(r2r)) {
+			throw new Relation2RelationAlreadyExists();
+		}
+		this.relation2RelationMappings.add(r2r);
 	}
 }

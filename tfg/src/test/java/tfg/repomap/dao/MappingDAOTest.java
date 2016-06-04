@@ -10,6 +10,8 @@ import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingId;
 import tfg.repomap.mapping.entity2entity.Entity2Entity;
 import tfg.repomap.mapping.property2property.Property2Property;
+import tfg.repomap.mapping.relation2relation.Relation2Relation;
+import tfg.repomap.scheme.Relation;
 import tfg.repomap.scheme.entity.Entity;
 
 @RunWith(JUnit4.class)
@@ -48,13 +50,21 @@ extends TestCase
 			mapping = dao.findById(mappingId);
 			assertTrue(mapping.contains(property2Property));
 			
+			Relation2Relation relation2Relation = new Relation2Relation(
+				new Relation("complexType", "topLevelComplexType"),
+				new Relation("Researcher", "Product")
+			);
+			mapping.addRelation2Relation(relation2Relation);
+			dao.update(mapping);
+			mapping = dao.findById(mappingId);
+			assertTrue(mapping.contains(relation2Relation));
+			
 			
 			assertTrue(dao.remove(mappingId));
 			mapping = dao.findById(mappingId);
 			assertNull(mapping);
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
