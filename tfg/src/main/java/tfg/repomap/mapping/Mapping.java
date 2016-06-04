@@ -7,6 +7,14 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import tfg.repomap.mapping.entity2entity.Entity2Entity;
+import tfg.repomap.mapping.entity2entity.Entity2EntityExistsException;
+import tfg.repomap.mapping.pattern2pattern.Pattern2Pattern;
+import tfg.repomap.mapping.pattern2pattern.Pattern2PatternAlreadyExistsException;
+import tfg.repomap.mapping.pattern2pattern.Pattern2PatternNotSameVariables;
+import tfg.repomap.mapping.property2property.Property2Property;
+import tfg.repomap.mapping.property2property.Property2PropertyAlreadyExists;
 import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.SchemeException;
 import tfg.repomap.scheme.entity.Entity;
@@ -20,6 +28,14 @@ public class Mapping {
 	@XmlElement
 	public Scheme source;
 
+	public Scheme getSource() {
+		return source;
+	}
+
+	public Scheme getTarget() {
+		return target;
+	}
+
 	@XmlElement
 	private Scheme target;
 		
@@ -32,7 +48,18 @@ public class Mapping {
 	@XmlElements(@XmlElement(name="pattern2pattern", type=Pattern2Pattern.class))
 	@XmlElementWrapper
 	private Set<Pattern2Pattern> pattern2PatternMappings;
-
+	
+	@XmlElements(@XmlElement(name="property2property", type=Property2Property.class))
+	@XmlElementWrapper
+	private Set<Property2Property> property2PropertyMappings;
+	
+	private Mapping() {
+		super();
+		entity2EntityMappings = new HashSet<Entity2Entity>();
+		pattern2PatternMappings = new HashSet<Pattern2Pattern>();
+		property2PropertyMappings = new HashSet<Property2Property>();
+	}
+	
 	public Mapping(Scheme source, Scheme target) {
 		this();
 		this.source = source;
@@ -40,10 +67,11 @@ public class Mapping {
 		this.id = new MappingId(source, target);
 	}
 	
-	private Mapping() {
-		super();
-		entity2EntityMappings = new HashSet<Entity2Entity>();
-		pattern2PatternMappings = new HashSet<Pattern2Pattern>();
+	public Mapping(MappingId mappingId) {
+		this();
+		this.source = mappingId.getSource();
+		this.target = mappingId.getTarget();
+		this.id = mappingId;
 	}
 	
 	public void addEntity2Entity(Entity2Entity e2e) 
@@ -84,7 +112,8 @@ public class Mapping {
 		return id;
 	}
 
-	public void addPattern2Pattern(Pattern2Pattern p2p) throws Pattern2PatternAlreadyExistsException {
+	public void addPattern2Pattern(Pattern2Pattern p2p) 
+		throws Pattern2PatternAlreadyExistsException {
 		if (this.contains(p2p)) {
 			throw new Pattern2PatternAlreadyExistsException();
 		}
@@ -96,8 +125,12 @@ public class Mapping {
 		return entity2EntityMappings.contains(e2e);
 	}
 	
-	protected boolean contains(Pattern2Pattern p2p) {
+	public boolean contains(Pattern2Pattern p2p) {
 		return pattern2PatternMappings.contains(p2p);
+	}
+	
+	public boolean contains(Property2Property p2p) {
+		return property2PropertyMappings.contains(p2p);
 	}
 
 	public void addPattern2Pattern(
@@ -111,5 +144,13 @@ public class Mapping {
 		Pattern patternTarget = source.createPattern(patternTargetString);
 		Pattern2Pattern p2p = new Pattern2Pattern(patternSource, patternTarget);
 		this.addPattern2Pattern(p2p);
+	}
+
+	public void addProperty2Property(Property2Property p2p) 
+		throws Property2PropertyAlreadyExists {
+		if (this.property2PropertyMappings.contains(p2p)) {
+			throw new Property2PropertyAlreadyExists();
+		}
+		this.property2PropertyMappings.add(p2p);
 	}
 }

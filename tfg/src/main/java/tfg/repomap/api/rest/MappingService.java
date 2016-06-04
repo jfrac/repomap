@@ -20,13 +20,13 @@ import javax.ws.rs.core.UriInfo;
 import tfg.repomap.MapEntity2EntityException;
 import tfg.repomap.MappingController;
 import tfg.repomap.MappingControllerException;
-import tfg.repomap.mapping.Entity2EntityExistsException;
 import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingAlreadyExistsException;
 import tfg.repomap.mapping.MappingId;
 import tfg.repomap.mapping.MappingNotExists;
-import tfg.repomap.mapping.Pattern2PatternAlreadyExistsException;
-import tfg.repomap.mapping.Pattern2PatternNotSameVariables;
+import tfg.repomap.mapping.entity2entity.Entity2EntityExistsException;
+import tfg.repomap.mapping.pattern2pattern.Pattern2PatternAlreadyExistsException;
+import tfg.repomap.mapping.pattern2pattern.Pattern2PatternNotSameVariables;
 import tfg.repomap.scheme.entity.EntityNotFoundException;
 import tfg.repomap.scheme.pattern.VariableException;
 

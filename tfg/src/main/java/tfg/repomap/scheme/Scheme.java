@@ -16,6 +16,7 @@ public abstract class Scheme {
 	
 	@XmlElement
 	private URL url;
+	
 	@XmlAttribute
 	private String type;
 	
@@ -24,6 +25,7 @@ public abstract class Scheme {
 	}
 	
 	public Scheme(URL schemeURL) {
+		this();
 		this.url = schemeURL;
 	}
 	
@@ -53,7 +55,11 @@ public abstract class Scheme {
 		return other.equals(this);
 	}
 
-	public abstract boolean hasEntity(Entity entity) throws SchemeException;
+	public abstract boolean hasEntity(Entity entity)
+		throws SchemeException;
+	
+	public abstract Pattern createPattern(String pattern) 
+			throws VariableException;
 	
 	public URL getURL() {
 		return this.url;
@@ -63,5 +69,4 @@ public abstract class Scheme {
 		return type;
 	}
 
-	abstract public Pattern createPattern(String pattern) throws VariableException;
 }

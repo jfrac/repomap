@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import junit.framework.TestCase;
+import tfg.repomap.mapping.entity2entity.Entity2Entity;
+import tfg.repomap.mapping.entity2entity.Entity2EntityExistsException;
 import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.SchemeException;
 import tfg.repomap.scheme.SchemeStub;

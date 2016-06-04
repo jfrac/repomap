@@ -1,5 +1,8 @@
 package tfg.repomap.scheme.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -9,11 +12,20 @@ public class Entity {
 	@XmlElement
 	private String name;
 	
+	private List<String> attributes;
+	
+	protected Entity() {
+		this.attributes = new ArrayList<String>();
+	}
+	
 	public Entity(String name) {
+		this();
 		this.name = name;
 	}
 	
-	protected Entity() {}
+	public void addAttribute(String attr) {
+		this.attributes.add(attr);
+	}
 	
 	@Override
 	public int hashCode() {

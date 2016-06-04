@@ -1,4 +1,4 @@
-package tfg.repomap.mapping;
+package tfg.repomap.mapping.entity2entity;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -20,9 +20,7 @@ public class Entity2Entity {
 		this.target = target;
 	}
 	
-	public Entity2Entity() {
-		
-	}
+	protected Entity2Entity() {}
 	
 	@Override
 	public int hashCode() {

@@ -1,4 +1,4 @@
-package tfg.repomap.mapping;
+package tfg.repomap.mapping.pattern2pattern;
 
 import java.util.Set;
 

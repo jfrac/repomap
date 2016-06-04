@@ -1,14 +1,27 @@
 package tfg.repomap.mapping;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import tfg.repomap.scheme.Scheme;
+import tfg.repomap.scheme.SchemeFactory;
+import tfg.repomap.scheme.SchemeFactoryException;
 
 public class MappingId {
 	
 	private String id;
-	
-	public MappingId() {
-		
+	private Scheme source;
+	public Scheme getSource() {
+		return source;
 	}
+
+	public Scheme getTarget() {
+		return target;
+	}
+
+	private Scheme target;
+	
+	protected MappingId() {}
 	
 	public MappingId(String id) {
 		this();
@@ -17,7 +30,17 @@ public class MappingId {
 	
 	public MappingId(Scheme source, Scheme target) {
 		this();
+		this.source = source;
+		this.target = target;
 		this.id = generateId(source, target)+"";
+	}
+	
+	public MappingId(
+		URL srcURLScheme, 
+		URL trgURLScheme
+	) throws MalformedURLException, SchemeFactoryException {
+		this(SchemeFactory.create(srcURLScheme), 
+				SchemeFactory.create(trgURLScheme));
 	}
 	
 	/*@Override

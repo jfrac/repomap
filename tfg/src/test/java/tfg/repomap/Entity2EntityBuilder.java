@@ -1,6 +1,6 @@
 package tfg.repomap;
 
-import tfg.repomap.mapping.Entity2Entity;
+import tfg.repomap.mapping.entity2entity.Entity2Entity;
 import tfg.repomap.scheme.entity.Entity;
 
 public class Entity2EntityBuilder {

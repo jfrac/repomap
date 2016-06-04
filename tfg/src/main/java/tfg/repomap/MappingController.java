@@ -6,15 +6,17 @@ import java.net.URL;
 import tfg.repomap.dao.DAOFactory;
 import tfg.repomap.dao.MappingDAO;
 import tfg.repomap.dao.MappingDAOException;
-import tfg.repomap.mapping.Entity2Entity;
-import tfg.repomap.mapping.Entity2EntityExistsException;
 import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingAlreadyExistsException;
 import tfg.repomap.mapping.MappingId;
 import tfg.repomap.mapping.MappingNotExists;
-import tfg.repomap.mapping.Pattern2Pattern;
-import tfg.repomap.mapping.Pattern2PatternAlreadyExistsException;
-import tfg.repomap.mapping.Pattern2PatternNotSameVariables;
+import tfg.repomap.mapping.entity2entity.Entity2Entity;
+import tfg.repomap.mapping.entity2entity.Entity2EntityExistsException;
+import tfg.repomap.mapping.pattern2pattern.Pattern2Pattern;
+import tfg.repomap.mapping.pattern2pattern.Pattern2PatternAlreadyExistsException;
+import tfg.repomap.mapping.pattern2pattern.Pattern2PatternNotSameVariables;
+import tfg.repomap.mapping.property2property.Property2Property;
+import tfg.repomap.mapping.property2property.Property2PropertyAlreadyExists;
 import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.SchemeException;
 import tfg.repomap.scheme.SchemeFactory;
@@ -30,6 +32,33 @@ import tfg.repomap.scheme.pattern.XMLPattern;
 import tfg.repomap.scheme.xml.XMLScheme;
 
 public class MappingController {
+	
+	public void mapProperties(
+		URL srcScheme, 
+		String srcEntity, 
+		String srcAttribute, 
+		URL trgScheme, 
+		String trgEntity, 
+		String trgAttribute
+	) throws MappingControllerException, Property2PropertyAlreadyExists {
+		try {
+			MappingId mappingId = new MappingId(srcScheme, trgScheme);
+			Mapping mapping = this.findOrCreateMapping(mappingId);
+			Property2Property p2p = new Property2Property(
+				new Entity(srcEntity),
+				srcAttribute,
+				new Entity(trgEntity),
+				trgAttribute
+			);
+			mapping.addProperty2Property(p2p);
+		} catch (MappingDAOException e) {
+			throw new MappingControllerException(e);
+		} catch (MalformedURLException e) {
+			throw new MappingControllerException(e);
+		} catch (SchemeFactoryException e) {
+			throw new MappingControllerException(e);
+		}
+	}
 	
 	public void mapPattern2Pattern( 
 		URL srcScheme,
@@ -180,6 +209,16 @@ public class MappingController {
 		} catch (MappingDAOException e) {
 			throw new MappingControllerException(e);
 		}
+	}
+	
+	protected Mapping findOrCreateMapping(MappingId mappingId) 
+			throws MappingControllerException, MappingDAOException {
+		Mapping mapping = this.getMapping(mappingId);
+		if (mapping == null) {
+			mapping = new Mapping(mappingId);
+			this.saveMapping(mapping);
+		}
+		return mapping;
 	}
 	
 	protected Mapping getMapping(
