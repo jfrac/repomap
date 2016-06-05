@@ -7,6 +7,7 @@ import tfg.repomap.scheme.entity.Entity;
 
 @XmlRootElement
 public class Property2Property {
+	
 	@XmlElement
 	private Entity sourceEntity;
 	@XmlElement

@@ -55,4 +55,8 @@ public class Relation {
 			return false;
 		return true;
 	}
+
+	public boolean validate(Scheme scheme) throws SchemeException {
+		return scheme.hasEntity(entity1) && scheme.hasEntity(entity2);
+	}
 }

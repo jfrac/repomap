@@ -166,10 +166,17 @@ public class Mapping {
 		this.property2PropertyMappings.add(p2p);
 	}
 
-	public void addRelation2Relation(Relation2Relation r2r) throws Relation2RelationAlreadyExists {
+	public void addRelation2Relation(Relation2Relation r2r) 
+		throws Relation2RelationAlreadyExists, SchemeException, EntityNotFoundException {
+		
 		if (this.relation2RelationMappings.contains(r2r)) {
 			throw new Relation2RelationAlreadyExists();
 		}
+		
+		if (!r2r.validate(getSource(), getTarget())) {
+			throw new EntityNotFoundException();
+		}
+		
 		this.relation2RelationMappings.add(r2r);
 	}
 }

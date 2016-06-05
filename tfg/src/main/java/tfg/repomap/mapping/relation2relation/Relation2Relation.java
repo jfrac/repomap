@@ -4,11 +4,21 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import tfg.repomap.scheme.Relation;
+import tfg.repomap.scheme.Scheme;
+import tfg.repomap.scheme.SchemeException;
 
 @XmlRootElement
 public class Relation2Relation {
 	@XmlElement
 	private Relation relationSource;
+	public Relation getRelationSource() {
+		return relationSource;
+	}
+
+	public Relation getRelationTarget() {
+		return relationTarget;
+	}
+
 	@XmlElement
 	private Relation relationTarget;
 	
@@ -51,6 +61,11 @@ public class Relation2Relation {
 		} else if (!relationTarget.equals(other.relationTarget))
 			return false;
 		return true;
+	}
+
+	public boolean validate(Scheme source, Scheme target) throws SchemeException {
+		return getRelationSource().validate(source) 
+			   && getRelationTarget().validate(target);
 	}
 	
 }
