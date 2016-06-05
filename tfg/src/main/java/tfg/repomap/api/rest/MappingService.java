@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -22,6 +23,7 @@ import tfg.repomap.MappingController;
 import tfg.repomap.MappingControllerException;
 import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingAlreadyExistsException;
+import tfg.repomap.mapping.MappingCouldNotDelete;
 import tfg.repomap.mapping.MappingId;
 import tfg.repomap.mapping.MappingNotExists;
 import tfg.repomap.mapping.entity2entity.Entity2EntityExistsException;
@@ -186,4 +188,19 @@ public class MappingService {
 				.build();
 	}
 	
+	@DELETE	
+	@Path("/{id}")
+	public Response deleteMapping(@PathParam("id") String id) {
+		MappingId mappingId = new MappingId(id);
+		try {
+			controller.deleteMapping(mappingId);
+			return Response.
+					status(Response.Status.NO_CONTENT).
+					build();
+		} catch (MappingCouldNotDelete e) {
+			return Response.
+					status(Response.Status.INTERNAL_SERVER_ERROR).
+					build();
+		}
+	}
 }

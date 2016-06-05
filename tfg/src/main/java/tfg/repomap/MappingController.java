@@ -7,6 +7,7 @@ import tfg.repomap.dao.MappingDAO;
 import tfg.repomap.dao.MappingDAOException;
 import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingAlreadyExistsException;
+import tfg.repomap.mapping.MappingCouldNotDelete;
 import tfg.repomap.mapping.MappingId;
 import tfg.repomap.mapping.MappingNotExists;
 import tfg.repomap.mapping.entity2entity.Entity2Entity;
@@ -265,6 +266,13 @@ public class MappingController {
 			mapping = mappingDAO.create(srcScheme, trgScheme);
 		}
 		return mapping;
+	}
+	
+	public void deleteMapping(MappingId mappingId)
+		throws MappingCouldNotDelete {
+		if (!getDAO().remove(mappingId)) {
+			throw new MappingCouldNotDelete();
+		}
 	}
 	
 	protected MappingDAO getDAO()
