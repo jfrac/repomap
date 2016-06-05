@@ -74,20 +74,34 @@ public class MappingController {
 	) throws MappingControllerException, Property2PropertyAlreadyExists, Property2PropertyNotValid {
 		try {
 			MappingId mappingId = new MappingId(srcScheme, trgScheme);
-			Mapping mapping = this.findOrCreateMapping(mappingId);
-			Property2Property p2p = new Property2Property(
-				new Entity(srcEntity),
-				srcAttribute,
-				new Entity(trgEntity),
-				trgAttribute
-			);
-			mapping.addProperty2Property(p2p);
-			saveMapping(mapping);
-		} catch (MappingDAOException e) {
-			throw new MappingControllerException(e);
+			this.mapProperties(mappingId, srcEntity, srcAttribute, trgEntity, trgAttribute);
 		} catch (MalformedURLException e) {
 			throw new MappingControllerException(e);
 		} catch (SchemeFactoryException e) {
+			throw new MappingControllerException(e);
+		}
+	}
+	
+	public void mapProperties(
+		MappingId mappingId, 
+		String sourceEntity, 
+		String sourceAttribute, 
+		String targetEntity,
+		String targetAttribute
+	) throws Property2PropertyAlreadyExists, Property2PropertyNotValid, MappingControllerException {
+		try {
+			Mapping mapping;
+			mapping = this.findOrCreateMapping(mappingId);
+			Property2Property p2p = new Property2Property(
+				new Entity(sourceEntity),
+				sourceAttribute,
+				new Entity(targetEntity),
+				targetAttribute
+			);
+			mapping.addProperty2Property(p2p);
+		
+			saveMapping(mapping);
+		} catch (MappingDAOException e) {
 			throw new MappingControllerException(e);
 		}
 	}
@@ -345,5 +359,4 @@ public class MappingController {
 			e.printStackTrace();
 		}
 	}
-
 }

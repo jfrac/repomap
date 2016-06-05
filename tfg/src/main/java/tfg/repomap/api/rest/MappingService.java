@@ -29,6 +29,7 @@ import tfg.repomap.mapping.MappingNotExists;
 import tfg.repomap.mapping.entity2entity.Entity2EntityExistsException;
 import tfg.repomap.mapping.pattern2pattern.Pattern2PatternAlreadyExistsException;
 import tfg.repomap.mapping.pattern2pattern.Pattern2PatternNotSameVariables;
+import tfg.repomap.mapping.property2property.Property2PropertyAlreadyExists;
 import tfg.repomap.scheme.entity.EntityNotFoundException;
 import tfg.repomap.scheme.pattern.VariableException;
 
@@ -132,7 +133,7 @@ public class MappingService {
 					.build();
 		} catch (Pattern2PatternAlreadyExistsException e) {
 			return Response
-					.status(409)
+					.status(Response.Status.CONFLICT)
 					.entity(e.getMessage())
 					.build();
 		} catch (Pattern2PatternNotSameVariables e) {
@@ -152,7 +153,6 @@ public class MappingService {
 					.build();
 		} 
 	}
-	
 
 	@GET	
 	@Path("/{id}")
@@ -201,6 +201,42 @@ public class MappingService {
 			return Response.
 					status(Response.Status.INTERNAL_SERVER_ERROR).
 					build();
+		}
+	}
+	
+	@POST
+	@Path("{id}/property2property")
+	public Response mapProperties(
+		@PathParam("id") String id,
+		@FormParam("source_entity") String sourceEntity,
+		@FormParam("source_attribute") String sourceAttribute,
+		@FormParam("source_entity") String targetEntity,
+		@FormParam("source_attribute") String targetAttribute
+	) throws MappingNotExists {
+		MappingId mappingId = new MappingId(id);
+		try { 
+			controller.mapProperties(
+				mappingId, 
+				sourceEntity, 
+				sourceAttribute, 
+				targetEntity, 
+				targetAttribute
+			);
+			
+			return Response
+					.status(201)
+					.header("Location", "/mappings/" + id)
+					.build();
+		} catch (Property2PropertyAlreadyExists e) {
+			return Response
+					.status(Response.Status.CONFLICT)
+					.entity(e.getMessage())
+					.build();
+		} catch (Exception e) {
+			return Response
+					.status(Response.Status.BAD_REQUEST)
+					.entity(e.getMessage())
+					.build();
 		}
 	}
 }
