@@ -8,6 +8,7 @@ import org.xml.sax.SAXParseException;
 
 import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.entity.Entity;
+import tfg.repomap.scheme.entity.EntityNotFoundException;
 import tfg.repomap.scheme.pattern.Pattern;
 import tfg.repomap.scheme.pattern.VariableException;
 import tfg.repomap.scheme.pattern.XMLPattern;
@@ -83,6 +84,34 @@ public class XMLScheme extends Scheme {
 	@Override
 	public Pattern createPattern(String pattern) throws VariableException {
 		return new XMLPattern(pattern);
+	}
+
+	@Override
+	public boolean hasAttribute(Entity entity, String attribute) 
+		throws EntityNotFoundException {
+
+		XMLSchemaLoader loader = new XMLSchemaLoader();
+		XSModel model = loader.loadURI(getURL().toString());
+		XSNamedMap map = model.getComponents(XSConstants.TYPE_DEFINITION);
+		for (int j=0; j<map.getLength(); j++) {
+			XSTypeDefinition def = (XSTypeDefinition) map.item(j); 
+			if (def.getTypeCategory() == XSTypeDefinition.COMPLEX_TYPE) {
+				XSComplexTypeDefinition xsCTDef = (XSComplexTypeDefinition) map.item(j);
+				if (xsCTDef.getName().equals(entity.getName())) {
+					XSObjectList xsAttrList = xsCTDef.getAttributeUses();
+					 for (int i = 0; i < xsAttrList.getLength(); i ++) {
+						 XSAttributeUse attr = (XSAttributeUse) xsAttrList.item(i);
+						 if (attr.getAttrDeclaration().getName().equals(attribute)) {
+							 return true;
+						 }
+					 }
+					 return false;
+				}
+			}
+			
+		}
+		
+		throw new EntityNotFoundException(entity.getName());
 	}
 }
 

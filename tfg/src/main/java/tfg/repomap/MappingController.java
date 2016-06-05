@@ -2,7 +2,6 @@ package tfg.repomap;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import tfg.repomap.dao.DAOFactory;
 import tfg.repomap.dao.MappingDAO;
 import tfg.repomap.dao.MappingDAOException;
@@ -17,6 +16,7 @@ import tfg.repomap.mapping.pattern2pattern.Pattern2PatternAlreadyExistsException
 import tfg.repomap.mapping.pattern2pattern.Pattern2PatternNotSameVariables;
 import tfg.repomap.mapping.property2property.Property2Property;
 import tfg.repomap.mapping.property2property.Property2PropertyAlreadyExists;
+import tfg.repomap.mapping.property2property.Property2PropertyNotValid;
 import tfg.repomap.mapping.relation2relation.Relation2Relation;
 import tfg.repomap.mapping.relation2relation.Relation2RelationAlreadyExists;
 import tfg.repomap.scheme.Relation;
@@ -43,7 +43,7 @@ public class MappingController {
 			URL trgScheme, 
 			String trgEntity, 
 			String trgEntity2
-		) throws MappingControllerException, Relation2RelationAlreadyExists {
+		) throws MappingControllerException, Relation2RelationAlreadyExists, EntityNotFoundException {
 			try {
 				MappingId mappingId = new MappingId(srcScheme, trgScheme);
 				Mapping mapping = this.findOrCreateMapping(mappingId);
@@ -58,7 +58,7 @@ public class MappingController {
 				throw new MappingControllerException(e);
 			} catch (MalformedURLException e) {
 				throw new MappingControllerException(e);
-			} catch (SchemeFactoryException e) {
+			} catch (SchemeException | SchemeFactoryException e) {
 				throw new MappingControllerException(e);
 			}
 		}
@@ -70,7 +70,7 @@ public class MappingController {
 		URL trgScheme, 
 		String trgEntity, 
 		String trgAttribute
-	) throws MappingControllerException, Property2PropertyAlreadyExists {
+	) throws MappingControllerException, Property2PropertyAlreadyExists, Property2PropertyNotValid {
 		try {
 			MappingId mappingId = new MappingId(srcScheme, trgScheme);
 			Mapping mapping = this.findOrCreateMapping(mappingId);
@@ -81,6 +81,7 @@ public class MappingController {
 				trgAttribute
 			);
 			mapping.addProperty2Property(p2p);
+			saveMapping(mapping);
 		} catch (MappingDAOException e) {
 			throw new MappingControllerException(e);
 		} catch (MalformedURLException e) {
@@ -308,16 +309,32 @@ public class MappingController {
 				oppl2Pattern
 			);
 			
+			controller.mapProperties(
+				xmlSchema, 
+				"complexType", 
+				"name", 
+				owlSchema, 
+				"Researcher", 
+				"authorOfOntology"
+			);
+			
 			System.out.println("Mapping generated!");
 		} catch (MalformedURLException e) {
 			System.out.println("URL mal formada");
 		} catch (MapEntity2EntityException e) {
 			System.out.println("Error al añadir el mapeo e2e: " + e.getMessage());
-		} catch (MapPattern2PatternException e) {
-			System.out.println("Error al añadir el mapeo p2p: " + e.getMessage());
 		} catch (VariableException e) {
 			System.out.println("Error al obtener las variables del patrón: " 
 					+ e.getMessage());
+		} catch (MappingControllerException e) {
+			System.out.println("Error al mapear: " + e.getMessage());
+		} catch (Property2PropertyAlreadyExists e) {
+			System.out.println("El mapeo de propiedades ya existe: " + e.getMessage());
+		} catch (Property2PropertyNotValid e) {
+			System.out.println("Fallo al validar mapeo de propiedades: " + e.getMessage());
+		} catch (MapPattern2PatternException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

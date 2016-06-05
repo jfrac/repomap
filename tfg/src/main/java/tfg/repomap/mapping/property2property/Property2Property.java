@@ -3,7 +3,10 @@ package tfg.repomap.mapping.property2property;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import tfg.repomap.scheme.Scheme;
+import tfg.repomap.scheme.SchemeException;
 import tfg.repomap.scheme.entity.Entity;
+import tfg.repomap.scheme.entity.EntityNotFoundException;
 
 @XmlRootElement
 public class Property2Property {
@@ -75,5 +78,10 @@ public class Property2Property {
 		} else if (!targetEntity.equals(other.targetEntity))
 			return false;
 		return true;
+	}
+
+	public boolean validate(Scheme source, Scheme target) throws EntityNotFoundException, SchemeException {
+		return source.hasAttribute(sourceEntity, sourceAttribute) 
+				&& target.hasAttribute(targetEntity, targetAttribute);
 	}
 }

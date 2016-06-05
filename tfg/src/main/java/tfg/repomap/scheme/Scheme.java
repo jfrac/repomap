@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import tfg.repomap.scheme.entity.Entity;
+import tfg.repomap.scheme.entity.EntityNotFoundException;
 import tfg.repomap.scheme.pattern.Pattern;
 import tfg.repomap.scheme.pattern.VariableException;
 
@@ -60,6 +61,11 @@ public abstract class Scheme {
 	
 	public abstract Pattern createPattern(String pattern) 
 			throws VariableException;
+	
+	public abstract boolean hasAttribute(
+		Entity sourceEntity, 
+		String sourceAttribute
+	) throws EntityNotFoundException, SchemeException;
 	
 	public URL getURL() {
 		return this.url;

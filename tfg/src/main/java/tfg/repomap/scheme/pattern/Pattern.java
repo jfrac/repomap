@@ -13,7 +13,7 @@ abstract public class Pattern implements Cloneable {
 	private String pattern;
 	protected Set<String> variables;
 
-	protected Pattern() {
+	public Pattern() {
 		super();
 		variables = new HashSet<String>();
 	}

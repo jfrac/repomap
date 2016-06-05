@@ -11,7 +11,9 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 import tfg.repomap.scheme.Scheme;
+import tfg.repomap.scheme.SchemeException;
 import tfg.repomap.scheme.entity.Entity;
+import tfg.repomap.scheme.entity.EntityNotFoundException;
 import tfg.repomap.scheme.pattern.OWLPattern;
 import tfg.repomap.scheme.pattern.Pattern;
 import tfg.repomap.scheme.pattern.VariableException;
@@ -36,6 +38,33 @@ public class OWLScheme extends Scheme {
 			}
 		}
         return false;
+	}
+	
+	@Override
+	public boolean hasAttribute(Entity entity, String sourceAttribute)
+		throws EntityNotFoundException, SchemeException {
+		
+		if (!hasEntity(entity)) {
+			throw new EntityNotFoundException(entity.getName());
+		}
+		
+		// TODO no consigo sacar los Data Property
+		return true;
+		
+		/*for (OWLDataProperty cls : getScheme().getDataPropertiesInSignature()) {
+			
+			//if (cls.getIRI().getFragment().equals(entity.getName())) {
+				System.out.println(cls.getIRI().getFragment());
+				for (OWLDataProperty property : cls.getDataPropertiesInSignature()) {
+					System.out.println(property.getIRI().getFragment());
+					if (property.getIRI().getFragment().equals(sourceAttribute)) {
+						return true;
+					}
+				}
+				return false;
+			//}
+		}
+        throw new EntityNotFoundException(entity.getName()); */
 	}
 	
 	protected OWLOntology getScheme() throws OWLSchemeException {

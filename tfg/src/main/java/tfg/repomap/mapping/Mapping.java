@@ -15,6 +15,7 @@ import tfg.repomap.mapping.pattern2pattern.Pattern2PatternAlreadyExistsException
 import tfg.repomap.mapping.pattern2pattern.Pattern2PatternNotSameVariables;
 import tfg.repomap.mapping.property2property.Property2Property;
 import tfg.repomap.mapping.property2property.Property2PropertyAlreadyExists;
+import tfg.repomap.mapping.property2property.Property2PropertyNotValid;
 import tfg.repomap.mapping.relation2relation.Relation2Relation;
 import tfg.repomap.mapping.relation2relation.Relation2RelationAlreadyExists;
 import tfg.repomap.scheme.Scheme;
@@ -159,10 +160,19 @@ public class Mapping {
 	}
 
 	public void addProperty2Property(Property2Property p2p) 
-		throws Property2PropertyAlreadyExists {
+		throws Property2PropertyAlreadyExists, Property2PropertyNotValid {
 		if (this.property2PropertyMappings.contains(p2p)) {
 			throw new Property2PropertyAlreadyExists();
 		}
+		
+		try {
+			if (!p2p.validate(getSource(), getTarget())) {
+				throw new Property2PropertyNotValid();
+			}
+		} catch (EntityNotFoundException | SchemeException e) {
+			throw new Property2PropertyNotValid(e); 
+		}
+		
 		this.property2PropertyMappings.add(p2p);
 	}
 

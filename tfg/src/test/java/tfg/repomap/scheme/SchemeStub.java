@@ -3,6 +3,7 @@ package tfg.repomap.scheme;
 import java.net.URL;
 
 import tfg.repomap.scheme.entity.Entity;
+import tfg.repomap.scheme.entity.EntityNotFoundException;
 import tfg.repomap.scheme.pattern.Pattern;
 import tfg.repomap.scheme.pattern.VariableException;
 
@@ -28,6 +29,12 @@ public class SchemeStub extends Scheme {
 	public Pattern createPattern(String pattern) throws VariableException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean hasAttribute(Entity sourceEntity, String sourceAttribute) throws EntityNotFoundException {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
