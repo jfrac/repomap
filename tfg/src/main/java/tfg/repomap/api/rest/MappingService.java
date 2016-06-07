@@ -176,13 +176,13 @@ public class MappingService {
 	public Response updateMapping(
 		Mapping mapping
 	) 
-		throws MappingControllerException, MappingNotExists
-	{
-		if (controller.getMapping(mapping.getId()) == null) {
-			throw new MappingNotExists();
+		throws MappingControllerException
+	{	
+		try {
+			controller.updateMapping(mapping);
+		} catch (MappingNotExists e) {
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
-		
-		controller.updateMapping(mapping);
 		
 		return Response.status(Response.Status.NO_CONTENT)
 				.build();
