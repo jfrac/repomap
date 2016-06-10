@@ -31,14 +31,6 @@ public class Mapping {
 	@XmlElement
 	public Scheme source;
 
-	public Scheme getSource() {
-		return source;
-	}
-
-	public Scheme getTarget() {
-		return target;
-	}
-
 	@XmlElement
 	private Scheme target;
 		
@@ -60,8 +52,7 @@ public class Mapping {
 	@XmlElementWrapper
 	private Set<Relation2Relation> relation2RelationMappings;
 	
-	
-	private Mapping() {
+	public Mapping() {
 		super();
 		entity2EntityMappings = new HashSet<Entity2Entity>();
 		pattern2PatternMappings = new HashSet<Pattern2Pattern>();
@@ -188,5 +179,13 @@ public class Mapping {
 		}
 		
 		this.relation2RelationMappings.add(r2r);
+	}
+	
+	public Scheme getSource() {
+		return source;
+	}
+
+	public Scheme getTarget() {
+		return target;
 	}
 }

@@ -19,7 +19,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 import tfg.repomap.MapEntity2EntityException;
-import tfg.repomap.MappingController;
+import tfg.repomap.MappingControllerImpl;
 import tfg.repomap.MappingControllerException;
 import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingAlreadyExistsException;
@@ -36,7 +36,7 @@ import tfg.repomap.scheme.pattern.VariableException;
 @Path("/mappings")
 public class MappingService {
 	
-	private MappingController controller = new MappingController();
+	private MappingControllerImpl controller = new MappingControllerImpl();
 	
 	@Context
 	private UriInfo uriInfo;
