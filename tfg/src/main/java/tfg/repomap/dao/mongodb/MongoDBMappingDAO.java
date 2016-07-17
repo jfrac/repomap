@@ -58,8 +58,7 @@ public class MongoDBMappingDAO extends AbstractMappingDAO
 			String mappingJSON = mappingToJSON(mapping);
 			DBObject dbObject = (DBObject)JSON.parse(mappingJSON);
 			dbObject.put("_id", mapping.getId().getId());
-			WriteResult wr = db.getCollection("mappings").insert(dbObject);
-			System.out.println(wr.getN());
+			db.getCollection("mappings").insert(dbObject);
 		} catch (DuplicateKeyException e) {
 			update(mapping);
 		} catch (Exception e) {
