@@ -87,9 +87,9 @@ public class Mapping {
 			throw new EntityNotFoundException();
 		}
 		
-		if (!this.target.hasEntity(e2e.getTarget())) {
+		/*if (!this.target.hasEntity(e2e.getTarget())) {
 			throw new EntityNotFoundException();
-		}
+		}*/
 		
 		entity2EntityMappings.add(e2e);
 	}

@@ -12,8 +12,8 @@ import tfg.repomap.scheme.pattern.VariableException;
 import tfg.repomap.scheme.pattern.XMLPattern;
 
 public class BasicTest {
-public static void main(String[] args) {
-		
+	public static void main(String[] args) {
+			
 		try {
 			URL xmlSchema = new URL("https://www.w3.org/2001/XMLSchema.xsd");
 			URL owlSchema = new URL("http://www.cs.toronto.edu/~yuana/research/maponto/ka.owl");
@@ -64,7 +64,7 @@ public static void main(String[] args) {
 		} catch (MapEntity2EntityException e) {
 			System.out.println("Error al a�adir el mapeo e2e: " + e.getMessage());
 		} catch (VariableException e) {
-			System.out.println("Error al obtener las variables del patr�n: " 
+			System.out.println("Error al obtener las variables del patrón: " 
 					+ e.getMessage());
 		} catch (MappingControllerException e) {
 			System.out.println("Error al mapear: " + e.getMessage());
@@ -73,8 +73,7 @@ public static void main(String[] args) {
 		} catch (Property2PropertyNotValid e) {
 			System.out.println("Fallo al validar mapeo de propiedades: " + e.getMessage());
 		} catch (MapPattern2PatternException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Fallo al crear mapeo de patrones: " + e.getMessage());
 		}
 	}
 }

@@ -24,4 +24,6 @@ public interface MappingDAO {
 	boolean remove(MappingId mappingId);
 	
 	void removeAll();
+
+	void save(Mapping mapping) throws MappingDAOException;
 }

@@ -70,7 +70,7 @@ public class FileMappingDAO extends AbstractMappingDAO
 		return false;
 	}
 	
-	protected void save(Mapping mapping) throws MappingDAOException {
+	public void save(Mapping mapping) throws MappingDAOException {
 		File file = this.getMappingFile(mapping.getId());
 		JAXBContext jaxbContext;
 		FileOutputStream out;

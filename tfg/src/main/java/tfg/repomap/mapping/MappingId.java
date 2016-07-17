@@ -52,8 +52,7 @@ public class MappingId {
 		return id.equals(mappingId.getId());
 	}*/
 	
-	
-	
+
 	public String getId() {
 		return id;
 	}
@@ -63,7 +62,7 @@ public class MappingId {
 		int result = 1;
 		result = prime * result + source.hashCode();
 		result = prime * result + target.hashCode();
-		return result;
+		return Math.abs(result);
 	}
 
 	@Override

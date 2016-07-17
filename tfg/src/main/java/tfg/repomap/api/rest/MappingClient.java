@@ -1,12 +1,9 @@
 package tfg.repomap.api.rest;
 
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class MappingClient {
 	private static final String END_POINT = "http://localhost:9999/mappings/-1830399218";
@@ -21,7 +18,7 @@ public class MappingClient {
 				.type(MediaType.APPLICATION_XML)
 			    .put(ClientResponse.class, mapping);
 
-		System.out.println("Código de retorno: " + response.getStatus());
+		System.out.println("Cï¿½digo de retorno: " + response.getStatus());
 		//String actividadURL = response.getLocation().toString();
 		//System.out.println("Mapping: " + actividadURL);
 		System.out.println("Entity: " + response.getEntity(String.class));

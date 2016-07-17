@@ -3,6 +3,8 @@ package tfg.repomap.mapping.property2property;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.SchemeException;
 import tfg.repomap.scheme.entity.Entity;
@@ -11,12 +13,12 @@ import tfg.repomap.scheme.entity.EntityNotFoundException;
 @XmlRootElement
 public class Property2Property {
 	
-	@XmlElement
-	private Entity sourceEntity;
+	@XmlElement(name="srcEntity")
+	private transient  Entity sourceEntity;
 	@XmlElement
 	private String sourceAttribute;
-	@XmlElement
-	private Entity targetEntity;
+	@XmlElement(name="trgEntity")
+	private transient  Entity targetEntity;
 	@XmlElement
 	private String targetAttribute;
 	
@@ -35,6 +37,16 @@ public class Property2Property {
 		this.sourceAttribute = sourceAttribute;
 		this.targetEntity = targetEntity;
 		this.targetAttribute = targetAttribute;
+	}
+	
+	@JsonValue
+	public String getSourceEntityName() {
+		return sourceEntity.getName();
+	}
+	
+	@JsonValue
+	public String getTargetEntityName() {
+		return sourceEntity.getName();
 	}
 
 	@Override
@@ -80,7 +92,8 @@ public class Property2Property {
 		return true;
 	}
 
-	public boolean validate(Scheme source, Scheme target) throws EntityNotFoundException, SchemeException {
+	public boolean validate(Scheme source, Scheme target) 
+			throws EntityNotFoundException, SchemeException {
 		return source.hasAttribute(sourceEntity, sourceAttribute) 
 				&& target.hasAttribute(targetEntity, targetAttribute);
 	}

@@ -12,8 +12,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.mongodb.DuplicateKeyException;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoException.DuplicateKey;
 import com.mongodb.WriteResult;
 import com.mongodb.util.JSON;
 
@@ -22,6 +22,7 @@ import tfg.repomap.dao.MappingDAOException;
 import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingId;
 import tfg.repomap.scheme.Scheme;
+import tfg.repomap.scheme.pattern.Pattern;
 
 public class MongoDBMappingDAO extends AbstractMappingDAO
 {
@@ -52,13 +53,14 @@ public class MongoDBMappingDAO extends AbstractMappingDAO
 		return mapping;
 	}
 
-	protected void save(Mapping mapping) throws MappingDAOException {
+	public void save(Mapping mapping) throws MappingDAOException {
 		try {
 			String mappingJSON = mappingToJSON(mapping);
 			DBObject dbObject = (DBObject)JSON.parse(mappingJSON);
 			dbObject.put("_id", mapping.getId().getId());
-			db.getCollection("mappings").insert(dbObject);
-		} catch (DuplicateKey e) {
+			WriteResult wr = db.getCollection("mappings").insert(dbObject);
+			System.out.println(wr.getN());
+		} catch (DuplicateKeyException e) {
 			update(mapping);
 		} catch (Exception e) {
 			throw new MappingDAOException();
@@ -82,8 +84,7 @@ public class MongoDBMappingDAO extends AbstractMappingDAO
 			mapping = gson.fromJson(dbObj.toString(), Mapping.class);
 			return mapping;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			throw new MappingDAOException();
+			throw new MappingDAOException(e);
 		}
 	}
 
@@ -110,6 +111,7 @@ public class MongoDBMappingDAO extends AbstractMappingDAO
 	public boolean remove(MappingId mappingId) {
 		BasicDBObject query = new BasicDBObject();
 		query.append("_id", mappingId.getId());
+		
 		WriteResult result = getCollection().remove(query);
 		return result.getN() > 0;
 	}
@@ -128,6 +130,7 @@ public class MongoDBMappingDAO extends AbstractMappingDAO
 	protected Gson getGson() {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(Scheme.class, new SchemeAdapter());
+		gsonBuilder.registerTypeAdapter(Pattern.class, new GsonAdapter<Pattern>());
 		Gson gson = gsonBuilder.create();
 		return gson;
 	}
