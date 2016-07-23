@@ -20,7 +20,7 @@ import tfg.repomap.scheme.pattern.VariableException;
 
 public class OWLScheme extends Scheme {
 
-	private OWLOntology owlScheme;
+	private transient OWLOntology owlScheme;
 	
 	public OWLScheme(URL schemeURL) throws OWLSchemeException {
 		super(schemeURL);
