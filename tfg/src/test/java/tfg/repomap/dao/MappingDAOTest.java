@@ -9,10 +9,16 @@ import tfg.repomap.MappingBuilder;
 import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingId;
 import tfg.repomap.mapping.entity2entity.Entity2Entity;
+import tfg.repomap.mapping.entity2entity.Entity2EntityExistsException;
 import tfg.repomap.mapping.property2property.Property2Property;
+import tfg.repomap.mapping.property2property.Property2PropertyAlreadyExists;
+import tfg.repomap.mapping.property2property.Property2PropertyNotValid;
 import tfg.repomap.mapping.relation2relation.Relation2Relation;
+import tfg.repomap.mapping.relation2relation.Relation2RelationAlreadyExists;
 import tfg.repomap.scheme.Relation;
+import tfg.repomap.scheme.SchemeException;
 import tfg.repomap.scheme.entity.Entity;
+import tfg.repomap.scheme.entity.EntityNotFoundException;
 
 @RunWith(JUnit4.class)
 abstract public class MappingDAOTest 
@@ -21,11 +27,12 @@ extends TestCase
 	protected MappingDAO dao;
 
 	@Test
-	public void crudMappingTest() {
+	public void crudMappingTest() 
+		throws MappingDAOException, Property2PropertyAlreadyExists, Property2PropertyNotValid, Relation2RelationAlreadyExists, SchemeException, EntityNotFoundException, Entity2EntityExistsException {
 		Mapping mapping = MappingBuilder.newMapping();
 		MappingId mappingId = mapping.getId();
 		
-		try {
+		
 			dao.create(mapping);
 			mapping = dao.findById(mappingId);
 			
@@ -64,9 +71,7 @@ extends TestCase
 			mapping = dao.findById(mappingId);
 			assertNull(mapping);
 			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
 		
 	}
 }
