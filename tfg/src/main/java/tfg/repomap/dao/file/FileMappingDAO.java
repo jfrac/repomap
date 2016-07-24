@@ -76,7 +76,13 @@ public class FileMappingDAO extends AbstractMappingDAO
 		FileOutputStream out;
 		try {
 			out = new FileOutputStream(file);
-			jaxbContext = JAXBContext.newInstance(Mapping.class, XMLScheme.class, OWLScheme.class);
+			jaxbContext = JAXBContext.newInstance(
+				Mapping.class, 
+				XMLScheme.class, 
+				OWLScheme.class,
+				OWLPattern.class,
+				XMLPattern.class
+			);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			jaxbMarshaller.marshal(mapping, out);
