@@ -12,8 +12,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.mongodb.DuplicateKeyException;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoException.DuplicateKey;
 import com.mongodb.WriteResult;
 import com.mongodb.util.JSON;
 
@@ -59,7 +59,7 @@ public class MongoDBMappingDAO extends AbstractMappingDAO
 			DBObject dbObject = (DBObject)JSON.parse(mappingJSON);
 			dbObject.put("_id", mapping.getId().getId());
 			db.getCollection("mappings").insert(dbObject);
-		} catch (DuplicateKeyException e) {
+		} catch (DuplicateKey e) {
 			update(mapping);
 		} catch (Exception e) {
 			throw new MappingDAOException();
