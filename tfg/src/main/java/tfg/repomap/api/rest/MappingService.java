@@ -119,7 +119,7 @@ public class MappingService {
 		@PathParam("id") String id,
 		@FormParam("pattern_source") String patternSource,
 		@FormParam("pattern_target") String patternTarget
-	) throws MappingNotExists {
+	) throws NotFoundException {
 		MappingId mappingId = new MappingId(id);
 		try { 
 			controller.mapPattern2Pattern(
@@ -151,6 +151,8 @@ public class MappingService {
 					.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(e.getMessage())
 					.build();
+		} catch (MappingNotExists e) {
+			throw new NotFoundException(e);
 		} 
 	}
 
@@ -210,8 +212,8 @@ public class MappingService {
 		@PathParam("id") String id,
 		@FormParam("source_entity") String sourceEntity,
 		@FormParam("source_attribute") String sourceAttribute,
-		@FormParam("source_entity") String targetEntity,
-		@FormParam("source_attribute") String targetAttribute
+		@FormParam("target_entity") String targetEntity,
+		@FormParam("target_attribute") String targetAttribute
 	) throws MappingNotExists {
 		MappingId mappingId = new MappingId(id);
 		try { 
@@ -231,6 +233,37 @@ public class MappingService {
 			return Response
 					.status(Response.Status.CONFLICT)
 					.entity(e.getMessage())
+					.build();
+		} catch (Exception e) {
+			return Response
+					.status(Response.Status.BAD_REQUEST)
+					.entity(e.getMessage())
+					.build();
+		}
+	}
+	
+	@POST
+	@Path("{id}/relation2relation")
+	public Response mapRelations(
+		@PathParam("id") String id,
+		@FormParam("source_entity1") String sourceEntity1,
+		@FormParam("source_entity2") String sourceEntity2,
+		@FormParam("target_entity1") String targetEntity1,
+		@FormParam("target_entity2") String targetEntity2
+	) throws MappingNotExists {
+		MappingId mappingId = new MappingId(id);
+		try { 
+			
+			controller.mapRelations(
+				mappingId, 
+				sourceEntity1, 
+				sourceEntity2,
+				targetEntity1, 
+				targetEntity2);
+			
+			return Response
+					.status(201)
+					.header("Location", "/mappings/" + id)
 					.build();
 		} catch (Exception e) {
 			return Response

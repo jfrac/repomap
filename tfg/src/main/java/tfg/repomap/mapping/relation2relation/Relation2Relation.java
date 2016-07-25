@@ -63,7 +63,9 @@ public class Relation2Relation {
 		return true;
 	}
 
-	public boolean validate(Scheme source, Scheme target) throws SchemeException {
+	public boolean validate(Scheme source, Scheme target) 
+		throws SchemeException {
+		
 		return getRelationSource().validate(source) 
 			   && getRelationTarget().validate(target);
 	}

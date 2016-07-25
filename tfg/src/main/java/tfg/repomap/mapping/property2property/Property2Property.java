@@ -14,11 +14,11 @@ import tfg.repomap.scheme.entity.EntityNotFoundException;
 public class Property2Property {
 	
 	@XmlElement(name="srcEntity")
-	private transient  Entity sourceEntity;
+	private Entity sourceEntity;
 	@XmlElement
 	private String sourceAttribute;
 	@XmlElement(name="trgEntity")
-	private transient  Entity targetEntity;
+	private Entity targetEntity;
 	@XmlElement
 	private String targetAttribute;
 	

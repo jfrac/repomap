@@ -37,31 +37,46 @@ import tfg.repomap.scheme.xml.XMLScheme;
 public class MappingControllerImpl {
 	
 	public void mapRelations(
-			URL srcScheme, 
-			String srcEntity, 
-			String srcEntity2, 
-			URL trgScheme, 
-			String trgEntity, 
-			String trgEntity2
-		) throws MappingControllerException, Relation2RelationAlreadyExists, EntityNotFoundException {
-			try {
-				MappingId mappingId = new MappingId(srcScheme, trgScheme);
-				Mapping mapping = this.findOrCreateMapping(mappingId);
-				Relation relationSource = new Relation(srcEntity, srcEntity2);
-				Relation relationTarget = new Relation(trgEntity, trgEntity2);
-				Relation2Relation r2r = new Relation2Relation(
-					relationSource,
-					relationTarget
-				);
-				mapping.addRelation2Relation(r2r);
-			} catch (MappingDAOException e) {
-				throw new MappingControllerException(e);
-			} catch (MalformedURLException e) {
-				throw new MappingControllerException(e);
-			} catch (SchemeException | SchemeFactoryException e) {
-				throw new MappingControllerException(e);
-			}
+		URL srcScheme, 
+		String srcEntity, 
+		String srcEntity2, 
+		URL trgScheme, 
+		String trgEntity, 
+		String trgEntity2
+	) throws MappingControllerException, Relation2RelationAlreadyExists, EntityNotFoundException {
+		try {
+			MappingId mappingId = new MappingId(srcScheme, trgScheme);
+			this.mapRelations(mappingId, srcEntity, srcEntity2, trgEntity, trgEntity2);
+		} catch (MalformedURLException e) {
+			throw new MappingControllerException(e);
+		} catch (SchemeFactoryException e) {
+			throw new MappingControllerException(e);
 		}
+	}
+	
+	public void mapRelations(
+		MappingId mappingId, 
+		String srcEntity, 
+		String srcEntity2,
+		String trgEntity, 
+		String trgEntity2
+	) throws MappingControllerException, Relation2RelationAlreadyExists, EntityNotFoundException {
+		try {
+			Mapping mapping = this.findOrCreateMapping(mappingId);
+			Relation relationSource = new Relation(srcEntity, srcEntity2);
+			Relation relationTarget = new Relation(trgEntity, trgEntity2);
+			Relation2Relation r2r = new Relation2Relation(
+				relationSource,
+				relationTarget
+			);
+			mapping.addRelation2Relation(r2r);
+			saveMapping(mapping);
+		} catch (MappingDAOException e) {
+			throw new MappingControllerException(e);
+		} catch (SchemeException e) {
+			throw new MappingControllerException(e);
+		}
+	}
 	
 	public void mapProperties(
 		URL srcScheme, 
