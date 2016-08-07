@@ -30,6 +30,7 @@ import tfg.repomap.mapping.entity2entity.Entity2EntityExistsException;
 import tfg.repomap.mapping.pattern2pattern.Pattern2PatternAlreadyExistsException;
 import tfg.repomap.mapping.pattern2pattern.Pattern2PatternNotSameVariables;
 import tfg.repomap.mapping.property2property.Property2PropertyAlreadyExists;
+import tfg.repomap.mapping.relation2relation.Relation2RelationAlreadyExists;
 import tfg.repomap.scheme.entity.EntityNotFoundException;
 import tfg.repomap.scheme.pattern.VariableException;
 
@@ -244,6 +245,7 @@ public class MappingService {
 	
 	@POST
 	@Path("{id}/relation2relation")
+	@Produces(MediaType.TEXT_PLAIN)
 	public Response mapRelations(
 		@PathParam("id") String id,
 		@FormParam("source_entity1") String sourceEntity1,
@@ -252,24 +254,32 @@ public class MappingService {
 		@FormParam("target_entity2") String targetEntity2
 	) throws MappingNotExists {
 		MappingId mappingId = new MappingId(id);
-		try { 
+		
 			
-			controller.mapRelations(
-				mappingId, 
-				sourceEntity1, 
-				sourceEntity2,
-				targetEntity1, 
-				targetEntity2);
+			try {
+				controller.mapRelations(
+					mappingId, 
+					sourceEntity1, 
+					sourceEntity2,
+					targetEntity1, 
+					targetEntity2);
+				return Response
+						.status(201)
+						.header("Location", "/mappings/" + id)
+						.build();
+			} catch (Relation2RelationAlreadyExists e) {
+				return Response
+						.status(Response.Status.CONFLICT)
+						.entity(e.getMessage())
+						.build();
+			} catch (MappingControllerException | EntityNotFoundException e) {
+				return Response
+						.status(Response.Status.BAD_REQUEST)
+						.entity(e.getMessage())
+						.build();
+			}
 			
-			return Response
-					.status(201)
-					.header("Location", "/mappings/" + id)
-					.build();
-		} catch (Exception e) {
-			return Response
-					.status(Response.Status.BAD_REQUEST)
-					.entity(e.getMessage())
-					.build();
-		}
+			
+		
 	}
 }
