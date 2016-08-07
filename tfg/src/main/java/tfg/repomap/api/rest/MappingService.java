@@ -129,7 +129,7 @@ public class MappingService {
 					patternTarget);
 			
 			return Response
-					.status(201)
+					.status(Response.Status.CREATED)
 					.header("Location", "/mappings/" + id)
 					.build();
 		} catch (Pattern2PatternAlreadyExistsException e) {
@@ -227,7 +227,7 @@ public class MappingService {
 			);
 			
 			return Response
-					.status(201)
+					.status(Response.Status.CREATED)
 					.header("Location", "/mappings/" + id)
 					.build();
 		} catch (Property2PropertyAlreadyExists e) {
@@ -264,7 +264,7 @@ public class MappingService {
 					targetEntity1, 
 					targetEntity2);
 				return Response
-						.status(201)
+						.status(Response.Status.CREATED)
 						.header("Location", "/mappings/" + id)
 						.build();
 			} catch (Relation2RelationAlreadyExists e) {
