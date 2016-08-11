@@ -5,7 +5,7 @@ import tfg.repomap.dao.mongodb.MongoDBMappingDAO;
 public abstract class DAOFactory {
 	
 	private static final Class<?> DEFAULT_FACTORY = MongoDBMappingDAO.class;
-	public static final String DAO_FACTORY = "bookle.dao.factory";
+	public static final String DAO_FACTORY = "dao.factory";
 	
 	public static MappingDAO getDAO() {
 		Class<?> daoClass = getDAOClass();
