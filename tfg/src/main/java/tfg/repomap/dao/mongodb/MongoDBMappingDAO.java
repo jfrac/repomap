@@ -112,6 +112,8 @@ public class MongoDBMappingDAO extends AbstractMappingDAO
 		query.append("_id", mappingId.getId());
 		
 		WriteResult result = getCollection().remove(query);
+		DBObject dbObj = getCollection().findOne(query);
+		System.out.println(query);
 		return result.getN() > 0;
 	}
 

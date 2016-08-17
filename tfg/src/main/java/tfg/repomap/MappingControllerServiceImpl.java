@@ -11,10 +11,17 @@ import tfg.repomap.mapping.MappingAlreadyExistsException;
 import tfg.repomap.mapping.MappingCouldNotDelete;
 import tfg.repomap.mapping.MappingId;
 import tfg.repomap.mapping.MappingNotExists;
+import tfg.repomap.mapping.entity2entity.Entity2Entity;
+import tfg.repomap.mapping.entity2entity.Entity2EntityExistsException;
 import tfg.repomap.mapping.pattern2pattern.Pattern2PatternAlreadyExistsException;
 import tfg.repomap.mapping.pattern2pattern.Pattern2PatternNotSameVariables;
+import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.SchemeFactoryException;
+import tfg.repomap.scheme.entity.Entity;
+import tfg.repomap.scheme.entity.EntityNotFoundException;
+import tfg.repomap.scheme.owl.OWLScheme;
 import tfg.repomap.scheme.pattern.VariableException;
+import tfg.repomap.scheme.xml.XMLScheme;
 
 @WebService(endpointInterface = "tfg.repomap.MappingControllerService")
 public class MappingControllerServiceImpl 
@@ -36,7 +43,6 @@ public class MappingControllerServiceImpl
 	public void deleteMapping(String id)
 		throws MappingCouldNotDelete {
 		MappingId mappingId = new MappingId(id);
-		System.out.println(id);
 		if (!getDAO().remove(mappingId)) {
 			throw new MappingCouldNotDelete();
 		}
@@ -63,6 +69,17 @@ public class MappingControllerServiceImpl
 			throw new MappingNotExists();
 		}
 		
+	}
+	
+	public void mapEntity2Entity(
+		String mappingId,
+		String srcEntity,
+		String trgEntity
+	) throws MapEntity2EntityException, 
+			 MappingNotExists, 
+			 EntityNotFoundException, 
+			 Entity2EntityExistsException {
+		super.mapEntity2Entity(new MappingId(mappingId), srcEntity, trgEntity);
 	}
 
 }

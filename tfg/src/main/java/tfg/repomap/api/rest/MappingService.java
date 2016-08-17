@@ -175,16 +175,22 @@ public class MappingService {
 	
 	@PUT	
 	@Path("/{id}")
-	@Consumes(MediaType.APPLICATION_XML)
+	//@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.TEXT_PLAIN)
 	public Response updateMapping(
-		Mapping mapping
+		@FormParam("mapping") Mapping mapping
 	) 
-		throws MappingControllerException
+		
 	{	
 		try {
 			controller.updateMapping(mapping);
 		} catch (MappingNotExists e) {
 			return Response.status(Response.Status.NOT_FOUND).build();
+		} catch (MappingControllerException e) {
+			return Response
+					.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(e.getMessage())
+					.build();
 		}
 		
 		return Response.status(Response.Status.NO_CONTENT)

@@ -11,14 +11,6 @@ public class MappingId {
 	
 	private String id;
 	private Scheme source;
-	public Scheme getSource() {
-		return source;
-	}
-
-	public Scheme getTarget() {
-		return target;
-	}
-
 	private Scheme target;
 	
 	protected MappingId() {}
@@ -43,15 +35,13 @@ public class MappingId {
 				SchemeFactory.create(trgURLScheme));
 	}
 	
-	/*@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof MappingId)) {
-			return false;
-		}
-		MappingId mappingId = (MappingId) obj;
-		return id.equals(mappingId.getId());
-	}*/
+	public Scheme getTarget() {
+		return target;
+	}
 	
+	public Scheme getSource() {
+		return source;
+	}
 
 	public String getId() {
 		return id;
