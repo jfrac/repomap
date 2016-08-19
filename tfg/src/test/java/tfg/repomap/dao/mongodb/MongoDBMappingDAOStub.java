@@ -9,8 +9,8 @@ public class MongoDBMappingDAOStub
 {
 	public MongoDBMappingDAOStub() throws UnknownHostException {
 		
-			MongoClient mongoClient = new MongoClient("localhost", 27017);
-			db = mongoClient.getDB("repomap_tests");
+		MongoClient mongoClient = new MongoClient("localhost", 27017);
+		db = mongoClient.getDB("repomap_tests");
 		
 	}
 }
