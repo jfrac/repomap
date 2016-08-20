@@ -16,6 +16,7 @@ import tfg.repomap.mapping.pattern2pattern.Pattern2PatternAlreadyExistsException
 import tfg.repomap.mapping.pattern2pattern.Pattern2PatternNotSameVariables;
 import tfg.repomap.mapping.property2property.Property2PropertyAlreadyExists;
 import tfg.repomap.mapping.property2property.Property2PropertyNotValid;
+import tfg.repomap.mapping.relation2relation.Relation2RelationAlreadyExists;
 import tfg.repomap.scheme.entity.EntityNotFoundException;
 import tfg.repomap.scheme.pattern.VariableException;
 
@@ -87,6 +88,23 @@ public class MappingControllerServiceImpl
 			srcProperty, 
 			trgEntity, 
 			trgProperty
+		);
+	}
+
+	@Override
+	public void mappingRelation2Relation(
+		String mappingId, 
+		String srcEntity1, 
+		String srcEntity2, 
+		String trgEntity1,
+		String trgEntity2
+	) throws MappingControllerException, Relation2RelationAlreadyExists, EntityNotFoundException {
+		super.mapRelations(
+			new MappingId(mappingId), 
+			srcEntity1, 
+			srcEntity2, 
+			trgEntity1, 
+			trgEntity2
 		);
 	}
 
