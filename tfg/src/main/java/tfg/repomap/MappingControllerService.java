@@ -13,6 +13,8 @@ import tfg.repomap.mapping.MappingNotExists;
 import tfg.repomap.mapping.entity2entity.Entity2EntityExistsException;
 import tfg.repomap.mapping.pattern2pattern.Pattern2PatternAlreadyExistsException;
 import tfg.repomap.mapping.pattern2pattern.Pattern2PatternNotSameVariables;
+import tfg.repomap.mapping.property2property.Property2PropertyAlreadyExists;
+import tfg.repomap.mapping.property2property.Property2PropertyNotValid;
 import tfg.repomap.scheme.entity.EntityNotFoundException;
 import tfg.repomap.scheme.pattern.VariableException;
 
@@ -39,6 +41,15 @@ public interface MappingControllerService extends MappingController {
 			 VariableException, 
 			 Pattern2PatternAlreadyExistsException, 
 			 MapEntity2EntityException;
+	
+	@WebMethod
+	public void mappingProperty2Property(
+		String mappingId,
+		String srcEntity,
+		String srcProperty,
+		String trgEntity,
+		String trgProperty
+	) throws Property2PropertyAlreadyExists, Property2PropertyNotValid, MappingControllerException;
 	
 	@WebMethod
 	public void mapEntity2Entity(
