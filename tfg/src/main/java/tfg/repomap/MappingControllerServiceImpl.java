@@ -11,17 +11,11 @@ import tfg.repomap.mapping.MappingAlreadyExistsException;
 import tfg.repomap.mapping.MappingCouldNotDelete;
 import tfg.repomap.mapping.MappingId;
 import tfg.repomap.mapping.MappingNotExists;
-import tfg.repomap.mapping.entity2entity.Entity2Entity;
 import tfg.repomap.mapping.entity2entity.Entity2EntityExistsException;
 import tfg.repomap.mapping.pattern2pattern.Pattern2PatternAlreadyExistsException;
 import tfg.repomap.mapping.pattern2pattern.Pattern2PatternNotSameVariables;
-import tfg.repomap.scheme.Scheme;
-import tfg.repomap.scheme.SchemeFactoryException;
-import tfg.repomap.scheme.entity.Entity;
 import tfg.repomap.scheme.entity.EntityNotFoundException;
-import tfg.repomap.scheme.owl.OWLScheme;
 import tfg.repomap.scheme.pattern.VariableException;
-import tfg.repomap.scheme.xml.XMLScheme;
 
 @WebService(endpointInterface = "tfg.repomap.MappingControllerService")
 public class MappingControllerServiceImpl 
@@ -30,8 +24,8 @@ public class MappingControllerServiceImpl
 
 	@WebMethod
 	public Mapping createMapping(
-			String srcSchemeURL,
-			String trgSchemeURL
+		String srcSchemeURL,
+		String trgSchemeURL
 	) throws MappingControllerException {
 		try {
 			return super.createMapping(new URL(srcSchemeURL), new URL(trgSchemeURL));
@@ -50,24 +44,19 @@ public class MappingControllerServiceImpl
 
 	@Override
 	public void mappingPattern2Pattern(
-		URL srcSchemeURL, 
-		URL trgSchemeURL, 
+		String mappingId, 
 		String srcPattern, 
 		String trgPattern
-	) throws MappingNotExists, Pattern2PatternNotSameVariables, VariableException, Pattern2PatternAlreadyExistsException {
-		MappingId mappingId;
-		try {
-			mappingId = new MappingId(srcSchemeURL, trgSchemeURL);
+	) throws MappingNotExists, Pattern2PatternNotSameVariables, VariableException, Pattern2PatternAlreadyExistsException, MapEntity2EntityException {
+		
+	
+			
 			mapPattern2Pattern( 
-				mappingId,
+				new MappingId(mappingId),
 				srcPattern,
 				trgPattern
 			);
-		} catch (MalformedURLException | SchemeFactoryException e) {
-			throw new MappingNotExists();
-		} catch (MapEntity2EntityException e) {
-			throw new MappingNotExists();
-		}
+	
 		
 	}
 	

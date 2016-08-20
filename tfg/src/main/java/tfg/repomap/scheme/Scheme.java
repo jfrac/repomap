@@ -33,8 +33,9 @@ public abstract class Scheme {
 	/**
 	 * Validate the pattern
 	 * @param scheme
+	 * @throws VariableException 
 	 */
-	abstract public void validate(Pattern pattern);
+	abstract public void validate(Pattern pattern) throws VariableException;
 	
 	@Override
 	public int hashCode() {

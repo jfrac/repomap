@@ -31,8 +31,7 @@ public interface MappingControllerService extends MappingController {
 	
 	@WebMethod
 	public void mappingPattern2Pattern(
-		URL srcSchemeURL,
-		URL trgSchemeURL,
+		String mappingId,
 		String srcPattern,
 		String trgPattern
 	) throws MappingNotExists, 

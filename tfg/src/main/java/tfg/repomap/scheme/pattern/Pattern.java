@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
+import tfg.repomap.scheme.Scheme;
+
 @XmlAccessorType(XmlAccessType.NONE)
 abstract public class Pattern implements Cloneable {
 	
@@ -28,7 +30,7 @@ abstract public class Pattern implements Cloneable {
 		return pattern;
 	}
 	
-	abstract protected void extractVariables() throws VariableException;
+	abstract protected void extractVariables(Scheme scheme) throws VariableException;
 	
 	public Set<String> getVariables() {
 		return variables;
@@ -47,4 +49,6 @@ abstract public class Pattern implements Cloneable {
         }
         return obj;
     }
+
+	abstract public void validate(Scheme scheme) throws VariableException;
 }

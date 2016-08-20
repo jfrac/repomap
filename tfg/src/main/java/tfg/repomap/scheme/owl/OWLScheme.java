@@ -84,9 +84,8 @@ public class OWLScheme extends Scheme {
 	}
 
 	@Override
-	public void validate(Pattern pattern) {
-		// TODO Auto-generated method stub
-		
+	public void validate(Pattern pattern) throws VariableException {
+		pattern.validate(this);
 	}
 
 	@Override

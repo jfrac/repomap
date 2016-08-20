@@ -12,16 +12,17 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import tfg.repomap.scheme.Scheme;
+
 public class XMLPattern extends Pattern {
 	
 	public XMLPattern(String pattern) throws VariableException {
 		super(pattern);
-		extractVariables();
 	}
 	
 	protected XMLPattern() {}
 	
-	protected void extractVariables() throws VariableException {
+	protected void extractVariables(Scheme scheme) throws VariableException {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder;
 		try {
@@ -67,5 +68,10 @@ public class XMLPattern extends Pattern {
 	
 	public Set<String> getVariables() {
 		return new HashSet<String>(variables);
+	}
+
+	@Override
+	public void validate(Scheme scheme) throws VariableException {
+		extractVariables(scheme);
 	}
 }

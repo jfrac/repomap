@@ -1,7 +1,16 @@
 package tfg.repomap.scheme.xml;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -12,9 +21,6 @@ import tfg.repomap.scheme.entity.EntityNotFoundException;
 import tfg.repomap.scheme.pattern.Pattern;
 import tfg.repomap.scheme.pattern.VariableException;
 import tfg.repomap.scheme.pattern.XMLPattern;
-
-import org.apache.xerces.xs.*;
-import org.apache.xerces.impl.xs.XMLSchemaLoader;
 
 public class XMLScheme extends Scheme {
 
@@ -56,16 +62,31 @@ public class XMLScheme extends Scheme {
 	
 	@Override
 	public boolean hasEntity(Entity entity) {
-		XMLSchemaLoader loader = new XMLSchemaLoader();
-		XSModel model = loader.loadURI(getURL().toString());
-		XSNamedMap map = model.getComponents(XSConstants.ELEMENT_DECLARATION);
-		for (int j=0; j<map.getLength(); j++) {
-		   XSObject o = map.item(j);
-		   if (o.getName().equals(entity.getName())) {
-			   return true;
-		   }
+		
+		try {
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			
+			InputStream is = getURL().openStream();
+			Document doc = dBuilder.parse(is);
+			NodeList nodes = doc.getElementsByTagName("xs:element");
+	        for (int i = 0; i < nodes.getLength(); i++){
+	            Element element = (Element) nodes.item(i);
+	            if (element.getAttribute("name").equals(entity.getName())) {
+	            	return true;
+	            }
+	        }
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
+        
 		return false;
 	}
 	
@@ -90,25 +111,34 @@ public class XMLScheme extends Scheme {
 	public boolean hasAttribute(Entity entity, String attribute) 
 		throws EntityNotFoundException {
 
-		XMLSchemaLoader loader = new XMLSchemaLoader();
-		XSModel model = loader.loadURI(getURL().toString());
-		XSNamedMap map = model.getComponents(XSConstants.TYPE_DEFINITION);
-		for (int j=0; j<map.getLength(); j++) {
-			XSTypeDefinition def = (XSTypeDefinition) map.item(j); 
-			if (def.getTypeCategory() == XSTypeDefinition.COMPLEX_TYPE) {
-				XSComplexTypeDefinition xsCTDef = (XSComplexTypeDefinition) map.item(j);
-				if (xsCTDef.getName().equals(entity.getName())) {
-					XSObjectList xsAttrList = xsCTDef.getAttributeUses();
-					 for (int i = 0; i < xsAttrList.getLength(); i ++) {
-						 XSAttributeUse attr = (XSAttributeUse) xsAttrList.item(i);
-						 if (attr.getAttrDeclaration().getName().equals(attribute)) {
-							 return true;
-						 }
-					 }
-					 return false;
-				}
-			}
-			
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder;
+		try {
+			dBuilder = dbFactory.newDocumentBuilder();
+			Document doc;
+			doc = dBuilder.parse(getURL().openStream());
+			NodeList nodes = doc.getElementsByTagName("xs:element");
+	        for (int i = 0; i < nodes.getLength(); i++){
+	            Element element = (Element) nodes.item(i);
+	            if (element.getAttribute("name").equals(entity.getName())) {
+	            	NodeList childNodes = element.getElementsByTagName("xs:attribute");
+	            	for (int j = 0; j < childNodes.getLength(); j++) {
+	            		element = (Element) childNodes.item(j);
+	            		if (element.getAttribute("name").equals(attribute)) {
+	            			return true;
+	            		}
+					}
+	            }
+	        }
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		throw new EntityNotFoundException(entity.getName());

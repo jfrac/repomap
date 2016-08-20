@@ -38,7 +38,7 @@ public class Mapping {
 	
 	@XmlElements(@XmlElement(name="entity2entity", type=Entity2Entity.class))
 	@XmlElementWrapper
-	private Set<Entity2Entity> entity2EntityMappings;
+	protected Set<Entity2Entity> entity2EntityMappings;
 	
 	@XmlElements(@XmlElement(name="pattern2pattern", type=Pattern2Pattern.class))
 	@XmlElementWrapper
@@ -145,7 +145,7 @@ public class Mapping {
 		     Pattern2PatternAlreadyExistsException 
 	{
 		Pattern patternSource = source.createPattern(patternSourceString);
-		Pattern patternTarget = source.createPattern(patternTargetString);
+		Pattern patternTarget = target.createPattern(patternTargetString);
 		Pattern2Pattern p2p = new Pattern2Pattern(patternSource, patternTarget);
 		this.addPattern2Pattern(p2p);
 	}

@@ -1,6 +1,5 @@
 package tfg.repomap.scheme.pattern;
 
-import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,21 +16,22 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
+import tfg.repomap.scheme.Scheme;
+
 public class OWLPattern extends Pattern {
 
+	protected OWLPattern() {}
+	
 	public OWLPattern(String pattern) throws VariableException {
 		super(pattern);
-		extractVariables();
-	}
+	}	
 	
-	protected OWLPattern() {}
-
 	@Override
-	protected void extractVariables() throws VariableException {
+	protected void extractVariables(Scheme scheme) throws VariableException {
 		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 		OWLOntology ontology;
 		try {
-			ontology = manager.loadOntology(IRI.create(URI.create("http://miuras.inf.um.es/~mfoppl/mfEKAW.owl")));
+			ontology = manager.loadOntology(IRI.create(scheme.getURL().toString()));
 			// Create an annotation based symbol table factory for making reference in the OPPL script to 
 			// object rdf:labels
 			OWLAnnotationProperty rdfLabel = ontology.getOWLOntologyManager().getOWLDataFactory().getRDFSLabel();
@@ -59,5 +59,8 @@ public class OWLPattern extends Pattern {
 			throw new VariableException(e);
 		}
 	}
-
+	
+	public void validate(Scheme scheme) throws VariableException {
+		extractVariables(scheme);
+	}
 }
