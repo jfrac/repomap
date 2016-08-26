@@ -25,10 +25,10 @@ public class BasicTest {
 			controller.mapEntity2Entity(xmlSchema, xmlElement, owlSchema, owlClass);
 			
 			Pattern xmlPattern = new XMLPattern(
-					"<schema>"
-					+ "<atribute ></atribute>"
-					+ "<simpleType>?x</simpleType>"
-					+ "</schema>"
+				"<schema>"
+				+ "<atribute ></atribute>"
+				+ "<simpleType>?x</simpleType>"
+				+ "</schema>"
 			);
 			
 			String opplScriptString = "";

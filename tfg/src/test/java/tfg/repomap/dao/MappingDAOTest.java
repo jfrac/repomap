@@ -1,5 +1,7 @@
 package tfg.repomap.dao;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 
 import org.junit.AfterClass;
@@ -8,8 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import junit.framework.TestCase;
-import tfg.repomap.Entity2EntityBuilder;
-import tfg.repomap.MappingBuilder;
+import tfg.repomap.Entity2EntityFactory;
+import tfg.repomap.MappingFactory;
 import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingId;
 import tfg.repomap.mapping.entity2entity.Entity2Entity;
@@ -26,6 +28,7 @@ import tfg.repomap.scheme.Relation;
 import tfg.repomap.scheme.SchemeException;
 import tfg.repomap.scheme.entity.Entity;
 import tfg.repomap.scheme.entity.EntityNotFoundException;
+import tfg.repomap.scheme.owl.OWLSchemeException;
 import tfg.repomap.scheme.pattern.OWLPattern;
 import tfg.repomap.scheme.pattern.VariableException;
 import tfg.repomap.scheme.pattern.XMLPattern;
@@ -38,8 +41,8 @@ extends TestCase
 	protected static Mapping mapping;
 
 	@BeforeClass
-	public static void setup() throws UnknownHostException, MappingDAOException {
-		mapping = MappingBuilder.newMapping();
+	public static void setup() throws UnknownHostException, MappingDAOException, MalformedURLException, OWLSchemeException {
+		mapping = MappingFactory.newMapping();
 		dao.create(mapping);
 	}
 	
@@ -64,7 +67,7 @@ extends TestCase
 		Entity2EntityExistsException, 
 		Pattern2PatternNotSameVariables, 
 		VariableException, 
-		Pattern2PatternAlreadyExistsException
+		Pattern2PatternAlreadyExistsException, IOException
 	{
 		MappingId mappingId = mapping.getId();
 		mapping = dao.findById(mappingId);
@@ -75,7 +78,7 @@ extends TestCase
 
 		// Entity 2 Entity
 
-		Entity2Entity e2e = Entity2EntityBuilder.newE2E();
+		Entity2Entity e2e = Entity2EntityFactory.newE2E();
 		mapping.addEntity2Entity(e2e);
 		dao.update(mapping);
 		mapping = dao.findById(mappingId);
@@ -108,8 +111,8 @@ extends TestCase
 		// Property 2 Property
 
 		Property2Property property2Property = new Property2Property(
-			new Entity("complexType"),
-			"name",
+			new Entity("atom"),
+			"x",
 			new Entity("Researcher"),
 			"authorOfOntology"
 		);
@@ -121,7 +124,7 @@ extends TestCase
 		// Relation 2 Relation
 
 		Relation2Relation relation2Relation = new Relation2Relation(
-			new Relation("complexType", "simpleType"),
+			new Relation("molecule", "atom"),
 			new Relation("Researcher", "Student")
 		);
 		mapping.addRelation2Relation(relation2Relation);
