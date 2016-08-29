@@ -1,13 +1,10 @@
 package tfg.repomap.scheme.xml;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -87,7 +84,7 @@ public class XMLScheme extends Scheme {
 
 	@Override
 	public boolean hasAttribute(Entity entity, String attribute) 
-		throws EntityNotFoundException {
+		throws EntityNotFoundException, SchemeException {
 
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
@@ -108,15 +105,8 @@ public class XMLScheme extends Scheme {
 					}
 	            }
 	        }
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new SchemeException(e);
 		}
 		
 		throw new EntityNotFoundException(entity.getName());
