@@ -48,23 +48,7 @@ public class OWLScheme extends Scheme {
 			throw new EntityNotFoundException(entity.getName());
 		}
 		
-		// TODO no consigo sacar los Data Property
 		return true;
-		
-		/*for (OWLDataProperty cls : getScheme().getDataPropertiesInSignature()) {
-			
-			//if (cls.getIRI().getFragment().equals(entity.getName())) {
-				System.out.println(cls.getIRI().getFragment());
-				for (OWLDataProperty property : cls.getDataPropertiesInSignature()) {
-					System.out.println(property.getIRI().getFragment());
-					if (property.getIRI().getFragment().equals(sourceAttribute)) {
-						return true;
-					}
-				}
-				return false;
-			//}
-		}
-        throw new EntityNotFoundException(entity.getName()); */
 	}
 	
 	protected OWLOntology getScheme() throws OWLSchemeException {

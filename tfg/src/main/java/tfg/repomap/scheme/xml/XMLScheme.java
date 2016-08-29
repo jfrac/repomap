@@ -16,6 +16,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import tfg.repomap.scheme.Scheme;
+import tfg.repomap.scheme.SchemeException;
 import tfg.repomap.scheme.entity.Entity;
 import tfg.repomap.scheme.entity.EntityNotFoundException;
 import tfg.repomap.scheme.pattern.Pattern;
@@ -41,27 +42,11 @@ public class XMLScheme extends Scheme {
 	
 	@Override
 	public void validate(Pattern pattern) {
-        /*final Schema SCHEMA_A = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(this.getURL());
-        SAXSource source = new SAXSource(new InputSource(new StringReader( pattern.getPattern())));
-        Validator validator = SCHEMA_A.newValidator();
-        validator.setErrorHandler(new CustomErrorHandler());
-        validator.validate(source);
-        JAXBContext jc = JAXBContext.newInstance("example.a");
-        Unmarshaller u = jc.createUnmarshaller();
-        // u.setSchema(SCHEMA_A); // not possible to partially validate using this method
-        JAXBElement<SomeType> element = (JAXBElement<SomeType>) u.unmarshal( pattern.getPattern() );
-		
-		// Comprobamos si existe el elemento 
-
-		// Comprobamos si cumple el esquema
-		
-		// Extraemos las variables
-		 * 
-		 */
+       
 	}
 	
 	@Override
-	public boolean hasEntity(Entity entity) {
+	public boolean hasEntity(Entity entity) throws SchemeException {
 		
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -76,15 +61,8 @@ public class XMLScheme extends Scheme {
 	            	return true;
 	            }
 	        }
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new SchemeException(e);
 		}
         
 		return false;

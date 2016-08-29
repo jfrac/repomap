@@ -1,10 +1,13 @@
 package tfg.repomap;
 
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 
 import tfg.repomap.mapping.Mapping;
 import tfg.repomap.mapping.MappingAlreadyExistsException;
@@ -18,7 +21,11 @@ import tfg.repomap.mapping.property2property.Property2PropertyAlreadyExists;
 import tfg.repomap.mapping.property2property.Property2PropertyNotValid;
 import tfg.repomap.mapping.relation2relation.Relation2RelationAlreadyExists;
 import tfg.repomap.scheme.entity.EntityNotFoundException;
+import tfg.repomap.scheme.owl.OWLScheme;
+import tfg.repomap.scheme.pattern.OWLPattern;
 import tfg.repomap.scheme.pattern.VariableException;
+import tfg.repomap.scheme.pattern.XMLPattern;
+import tfg.repomap.scheme.xml.XMLScheme;
 
 @WebService(endpointInterface = "tfg.repomap.MappingControllerService")
 public class MappingControllerServiceImpl 
@@ -106,6 +113,32 @@ public class MappingControllerServiceImpl
 			trgEntity1, 
 			trgEntity2
 		);
+	}
+
+	@Override
+	public void updateMapping(String mappingStr) 
+		throws MappingControllerException, MappingNotExists {
+		try {
+			JAXBContext jaxbContext = JAXBContext.newInstance(
+				Mapping.class,
+				MappingId.class,
+				OWLScheme.class, 
+				XMLScheme.class,
+				XMLPattern.class,
+				OWLPattern.class
+			);
+			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+			Mapping mapping = (Mapping) jaxbUnmarshaller.unmarshal(new StringReader(mappingStr));
+		
+			super.updateMapping(mapping);
+		} catch (Exception e) {
+			throw new MappingControllerException(e);
+		}
+	}
+
+	@Override
+	public Mapping getMapping(String mappingId) throws MappingControllerException {
+		return super.getMapping(new MappingId(mappingId));
 	}
 
 }

@@ -3,7 +3,6 @@ package tfg.repomap.api.rest;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -80,11 +79,12 @@ public class MappingService {
 	
 	@POST
 	@Path("{id}/entity2entity")
+	@Produces(MediaType.TEXT_PLAIN)
 	public Response mapEntity2Entity(
 		@PathParam("id") String id,
 		@FormParam("entity_source") String entitySource,
 		@FormParam("entity_target") String entityTarget
-	) throws MappingNotExists {
+	)  {
 		MappingId mappingId = new MappingId(id);
 		try { 
 			controller.mapEntity2Entity(
@@ -109,6 +109,11 @@ public class MappingService {
 		} catch (Entity2EntityExistsException e) {
 			return Response
 					.status(Response.Status.CONFLICT)
+					.entity(e.getMessage())
+					.build();
+		} catch (MappingNotExists e) {
+			return Response
+					.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(e.getMessage())
 					.build();
 		}

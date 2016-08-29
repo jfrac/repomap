@@ -62,6 +62,11 @@ public interface MappingControllerService extends MappingController {
 	) throws MappingControllerException, Relation2RelationAlreadyExists, EntityNotFoundException;
 	
 	@WebMethod
+	public void updateMapping(
+		String mapping
+	) throws MappingControllerException, MappingNotExists;
+	
+	@WebMethod
 	public void mapEntity2Entity(
 			String mappingId,
 			String srcEntity,
@@ -70,4 +75,7 @@ public interface MappingControllerService extends MappingController {
 				 MappingNotExists, 
 				 EntityNotFoundException, 
 				 Entity2EntityExistsException;
+	
+	@WebMethod
+	public Mapping getMapping(String mappingId) throws MappingControllerException;
 }

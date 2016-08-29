@@ -3,12 +3,17 @@ package tfg.repomap.mapping;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import tfg.repomap.scheme.Scheme;
 import tfg.repomap.scheme.SchemeFactory;
 import tfg.repomap.scheme.SchemeFactoryException;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class MappingId {
 	
+	@XmlAttribute
 	private String id;
 	private Scheme source;
 	private Scheme target;

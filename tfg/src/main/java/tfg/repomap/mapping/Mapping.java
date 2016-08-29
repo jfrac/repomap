@@ -33,7 +33,8 @@ public class Mapping {
 
 	@XmlElement
 	private Scheme target;
-		
+	
+	@XmlElement(name = "mappingid")
 	private MappingId id;
 	
 	@XmlElements(@XmlElement(name="entity2entity", type=Entity2Entity.class))
