@@ -5,6 +5,7 @@ import java.net.URI;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -47,7 +48,7 @@ public class RESTTest extends TestCase {
 	public void createMapping() {
 		params.add("url_scheme_source", "http://sele.inf.um.es/swit/zinc/molecule.xsd");
 		params.add("url_scheme_target", "http://miuras.inf.um.es/ontologies/molecule.owl");
-
+			
 		response = resource.method(
 			"POST", 
 			ClientResponse.class,
@@ -65,11 +66,50 @@ public class RESTTest extends TestCase {
 	}
 	
 	@Test
+	public void cannotCreateDuplicateMapping() {
+		params.add("url_scheme_source", "http://sele.inf.um.es/swit/zinc/molecule.xsd");
+		params.add("url_scheme_target", "http://miuras.inf.um.es/ontologies/molecule.owl");
+		
+		resource = client.resource(ENDPOINT_URL + "mappings/");
+		response = resource.method(
+			"POST", 
+			ClientResponse.class,
+			params
+		);
+		
+		assertEquals(
+			response.getStatus(), 
+			Response.Status.CONFLICT.getStatusCode()
+		);
+	}
+	
+	@Test
 	public void createEntity2EntityMapping() {
 		params.add("entity_source", "atom");
 		params.add("entity_target", "Atom");
 		
 		changeResourceCollection("entity2entity");
+		
+		response = resource.method(
+			"POST",
+			ClientResponse.class,
+			toFormParams(params)
+		);
+		
+		assertEquals(
+			response.getStatus(),
+			Response.Status.CREATED.getStatusCode()
+		);
+	}
+	
+	@Test
+	public void createProperty2Propety() {
+		params.add("source_entity", "atom");
+		params.add("source_attribute", "x");
+		params.add("target_entity", "Atom");
+		params.add("target_attribute", "x");
+		
+		changeResourceCollection("property2property");
 		
 		response = resource.method(
 			"POST",
@@ -104,8 +144,8 @@ public class RESTTest extends TestCase {
 		);
 	}
 	
-	@Test
-	public void deleteMapping() {
+	@AfterClass
+	public static void deleteMapping() {
 		response = resourceWithIdentifier.method(
 			"DELETE", 
 			ClientResponse.class
