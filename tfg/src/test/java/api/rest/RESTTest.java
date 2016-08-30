@@ -83,7 +83,28 @@ public class RESTTest extends TestCase {
 		);
 	}
 	
-
+	@Test
+	public void createRelation2Relation() {
+		params.add("source_entity1", "molecule");
+		params.add("source_entity2", "atom");
+		params.add("target_entity1", "Molecule");
+		params.add("target_entity2", "Atom");
+		
+		changeResourceCollection("relation2relation");
+		
+		response = resource.method(
+			"POST",
+			ClientResponse.class,
+			toFormParams(params)
+		);
+		
+		assertEquals(
+			response.getStatus(),
+			Response.Status.CREATED.getStatusCode()
+		);
+	}
+	
+	@Test
 	public void deleteMapping() {
 		response = resourceWithIdentifier.method(
 			"DELETE", 
