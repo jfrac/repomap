@@ -5,6 +5,7 @@ import java.net.URI;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +14,7 @@ import org.junit.runners.JUnit4;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.representation.Form;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 import junit.framework.TestCase;
@@ -25,6 +27,8 @@ public class RESTTest extends TestCase {
 	protected static Client client;
 	protected static ClientResponse response;
 	protected static WebResource resource;
+	protected static WebResource resourceWithIdentifier;
+	protected static MultivaluedMap<String, String> params;
 	
 	@BeforeClass
 	public static void setup() {
@@ -34,9 +38,13 @@ public class RESTTest extends TestCase {
 		resource = client.resource(ENDPOINT_URL + path);
 	}
 	
+	@Before
+	public void before() {
+		params = params();
+	}
+	
 	@Test
 	public void createMapping() {
-		MultivaluedMap<String, String> params = new MultivaluedMapImpl();
 		params.add("url_scheme_source", "http://sele.inf.um.es/swit/zinc/molecule.xsd");
 		params.add("url_scheme_target", "http://miuras.inf.um.es/ontologies/molecule.owl");
 
@@ -48,6 +56,7 @@ public class RESTTest extends TestCase {
 		
 		URI newLocation = response.getLocation();
 		resource = client.resource(newLocation);
+		resourceWithIdentifier = client.resource(newLocation);
 		
 		assertEquals(
 			response.getStatus(), 
@@ -56,8 +65,27 @@ public class RESTTest extends TestCase {
 	}
 	
 	@Test
-	public void deleteMapping() {
+	public void createEntity2EntityMapping() {
+		params.add("entity_source", "atom");
+		params.add("entity_target", "Atom");
+		
+		changeResourceCollection("entity2entity");
+		
 		response = resource.method(
+			"POST",
+			ClientResponse.class,
+			toFormParams(params)
+		);
+		
+		assertEquals(
+			response.getStatus(),
+			Response.Status.CREATED.getStatusCode()
+		);
+	}
+	
+
+	public void deleteMapping() {
+		response = resourceWithIdentifier.method(
 			"DELETE", 
 			ClientResponse.class
 		);
@@ -66,5 +94,19 @@ public class RESTTest extends TestCase {
 			response.getStatus(),
 			Response.Status.NO_CONTENT.getStatusCode()
 		);
+	}
+	
+	protected static MultivaluedMap<String, String> params() {
+		return new MultivaluedMapImpl();
+	}
+	
+	protected static void changeResourceCollection(String newCollection) {
+		resource = client.resource(resourceWithIdentifier.getURI().toString() + "/" + newCollection);
+	}
+	
+	protected static Form toFormParams(MultivaluedMap<String, String> params){
+		Form form = new Form();
+		form.putAll(params);
+		return form;
 	}
 }
