@@ -16,7 +16,7 @@ import tfg.repomap.mapping.MappingTest;
 	MongoDBMappingDAOTest.class,
 	FileMappingDAOTest.class,
 	RESTTest.class})
-public class AppTest 
+public class RepomapTestSuite 
 {
     
 }
