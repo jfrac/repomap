@@ -124,6 +124,32 @@ public class RESTTest extends TestCase {
 	}
 	
 	@Test
+	public void createPattern2Pattern() {
+		params.add("pattern_source", "<atom x=\"?x\" y=\"?y\" z=\"?z\"></atom>");
+		params.add("pattern_target", "?x:DATAPROPERTY,"
+				+ " ?y:DATAPROPERTY,"
+				+ "?x:DATAPROPERTY,"
+				+ "BEGIN"
+				+ "ADD ?x subClassOf Atom"
+				+ "ADD ?y subClassOf Atom"
+				+ "ADD ?z subClassOf Atom"
+				+ "END;");
+		
+		changeResourceCollection("pattern2pattern");
+		
+		response = resource.method(
+			"POST",
+			ClientResponse.class,
+			toFormParams(params)
+		);
+		
+		assertEquals(
+			response.getStatus(),
+			Response.Status.CREATED.getStatusCode()
+		);
+	}
+	
+	@Test
 	public void createRelation2Relation() {
 		params.add("source_entity1", "molecule");
 		params.add("source_entity2", "atom");
