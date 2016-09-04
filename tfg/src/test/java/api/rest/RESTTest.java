@@ -125,14 +125,20 @@ public class RESTTest extends TestCase {
 	
 	@Test
 	public void createPattern2Pattern() {
-		params.add("pattern_source", "<atom x=\"?x\" y=\"?y\" z=\"?z\"></atom>");
-		params.add("pattern_target", "?x:DATAPROPERTY,"
-				+ " ?y:DATAPROPERTY,"
-				+ "?x:DATAPROPERTY,"
+		params.add("pattern_source", "<molecule>"
+				+ "<properties>"
+				+ "<property name=\"Mol2_MolInfo_Name\">"
+				+ "<val>?chiralMolecule</val>"
+				+ "</property>"
+				+ "<property name=\"isChiral\">"
+				+ "<val>1</val>"
+				+ "</property>"
+				+ "</properties>"
+				+ "</molecule>");
+		params.add("pattern_target", "?chiralMolecule:INDIVIDUAL"
 				+ "BEGIN"
-				+ "ADD ?x subClassOf Atom"
-				+ "ADD ?y subClassOf Atom"
-				+ "ADD ?z subClassOf Atom"
+				+ "ADD ?chiralMolecule instanceof Molecule"
+				+ "ADD ?chiralMolecule has_chemical_properties chirality"
 				+ "END;");
 		
 		changeResourceCollection("pattern2pattern");
